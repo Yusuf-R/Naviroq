@@ -177,3 +177,7 @@ coverage/
 
 # Ignore all .env files
 .env*
+
+
+# add all the files in forlder server/src/devGround
+server/src/devGround/*

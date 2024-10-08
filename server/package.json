@@ -1,21 +1,30 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "mongoose": "^8.7.0",
-    "redis": "^4.7.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
-  }
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js",
+        "start-worker": "nodemon --exec babel-node --presets @babel/preset-env src/controllers/imageWorker.js",
+        "keep-alive": "nodemon --exec babel-node --presets @babel/preset-env ./src/keepAlive.js",
+        "dev": "nodemon --exec babel-node --presets @babel/preset-env",
+        "lint": "eslint . --ext .js"
+    },
+    "keywords": [],
+    "author": "Abdulwasiu Yusuf",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.21.0",
+        "mongoose": "^8.7.0",
+        "redis": "^4.7.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.25.7",
+        "@babel/core": "^7.25.7",
+        "@babel/node": "^7.25.7",
+        "@babel/preset-env": "^7.25.7",
+        "nodemon": "^3.1.7"
+    }
 }
