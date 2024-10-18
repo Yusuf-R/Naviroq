@@ -181,3 +181,8 @@ coverage/
 
 # add all the files in forlder server/src/devGround
 server/src/devGround/*
+
+# 
+client/jwt-signing-private.pem
+client/jwt-encryption-private.pem
+client/src/lib/playground
