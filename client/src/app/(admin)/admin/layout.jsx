@@ -19,7 +19,7 @@ const routeBackgrounds = {
   '/resetpassword': '/bg-4.svg',
 };
 
-function EntryLayout({ children }) {
+function AdminLayout({ children }) {
   const pathName = usePathname();
   const theme = useTheme();
 
@@ -90,4 +90,4 @@ function EntryLayout({ children }) {
   );
 }
 
-export default EntryLayout;
+export default AdminLayout;
