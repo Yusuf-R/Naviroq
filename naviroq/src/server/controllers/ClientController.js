@@ -1,4 +1,3 @@
-'use server';
 import AuthController from "./AuthController";
 import dbClient from "@/server/database/mongoDB";
 import getNavigatorModels from "@/server/models/Navigator/Navigator";
