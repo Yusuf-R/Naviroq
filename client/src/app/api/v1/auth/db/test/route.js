@@ -1,3 +1,4 @@
+'use server';
 import dbClient from "@/server/database/mongoDB"; //  conn test
 import { NextResponse } from "next/server";
 
