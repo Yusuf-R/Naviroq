@@ -128,3 +128,61 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+# NestJS specific
+dist/
+.cache/
+
+
+# Logs
+logs/
+*.log
+logs/**/*.log
+*.log.*
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+*.swp
+
+# MongoDB
+dump/
+*.seed
+*.local
+
+# VSCode specific files
+.vscode/
+.history/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Optional: Ignore build files if you're using Docker
+docker-compose.yml
+Dockerfile
+
+# Optional: Ignore test coverage if you're using a testing framework like Jest
+coverage/
+
+# Optional: Ignore debug configurations
+.vscode/launch.json
+
+# Optional: Ignore production configuration
+.env.production
+
+
+# Ignore all .env files
+.env*
+.env.local
+
+# add all the files in forlder server/src/devGround
+server/src/devGround/*
+
+# 
+client/jwt-signing-private.pem
+client/jwt-encryption-private.pem
+client/src/lib/playground
