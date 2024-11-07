@@ -1,14 +1,11 @@
-
-import LazyComponent from "@/components/LazyLoading/LazyLoading";
-
-
-function Demo() {
+import Demo from "@/components/Demo/Demo";
+function MyDemo() {
     return (
         <>
-            <LazyComponent/>
+            <Demo/>
         </>
         
     )
 }
 
-export default Demo;
+export default MyDemo;

@@ -35,7 +35,8 @@ function TopNav({ onToggleSideNav, clientProfile }) {
                 alignItems: "center",
                 p: 2,
                 boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "white",
+                // background: "linear-gradient(to right, #000428, #004e92)",
+                background: "linear-gradient(to right, #485563, #29323c)",
                 color: "text.primary",
             }}
         >
@@ -46,10 +47,10 @@ function TopNav({ onToggleSideNav, clientProfile }) {
                     alt="Naviroq Logo"
                     sx={{ width: 40, height: 40 }}
                 />
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold", color: '#FFF' }}>
                     Naviroq
                 </Typography>
-                <IconButton onClick={onToggleSideNav}>
+                <IconButton onClick={onToggleSideNav} sx={{color: '#FFF' }}>
                     <MenuIcon />
                 </IconButton>
             </Box>
@@ -58,23 +59,23 @@ function TopNav({ onToggleSideNav, clientProfile }) {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1}}>
                 <Avatar
                     src={
-                        clientProfile.profilePicture
-                            ? clientProfile.profilePicture
+                        clientProfile.avatar
+                            ? clientProfile.avatar
                             : "/av-1.svg"
                     }
                     alt="User Avatar"
                     sx={{ width: 50, height: 50 }}
                 />
                 <Box sx={{ textAlign: "left" }}>
-                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    <Typography variant="body1" sx={{ fontWeight: "bold", color: '#FFF'  }}>
                         {clientProfile.fullName}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="#FFF">
                         Profile
                     </Typography>
                 </Box>
                 <IconButton onClick={handleMenuOpen}>
-                    <ArrowDropDownIcon />
+                    <ArrowDropDownIcon sx={{color: '#FFF' }}/>
                 </IconButton>
 
                 {/* Dropdown Menu */}
@@ -88,8 +89,8 @@ function TopNav({ onToggleSideNav, clientProfile }) {
                     }}
                 >
                     <MenuItem onClick={handleMenuClose}>
-                        <ListItemIcon>
-                            <PersonIcon fontSize="small" />
+                        <ListItemIcon >
+                            <PersonIcon fontSize="small"/>
                         </ListItemIcon>
                         Profile
                     </MenuItem>

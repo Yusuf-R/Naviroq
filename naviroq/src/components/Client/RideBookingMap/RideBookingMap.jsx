@@ -264,7 +264,7 @@ function RideBookingMap() {
             {/* Inject the radar keyframes into the page */}
             <style>{styles}</style>
 
-            <Box sx={{ height: "100vh", width: "100vw", overflow: "hidden", position: "relative" }}>
+            <Box sx={{ height: "100vh", width: "100vw", overflow: "auto", position: "relative" }}>
                 <Box
                     sx={{
                         position: "absolute",

@@ -13,21 +13,25 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
+import PlaceIcon from '@mui/icons-material/Place';
 
-function SideNav({ isOpen, activeRoute }) {
+function SideNav({ navState, activeRoute }) {
   const router = useRouter();
 
   const handleNavigation = (route) => {
     router.push(route);
   };
 
-  // Active route highlight style
+  // Determine width based on navState
+  const navWidth = navState === "full" ? 240 : navState === "icon" ? 80 : 0;
+  const showText = navState === "full";
+  const showIcons = navState !== "hidden";
+
   const activeStyle = {
     backgroundColor: "#374151",
     borderRadius: "8px",
   };
 
-  // Hover effect style
   const hoverStyle = {
     "&:hover": {
       background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
@@ -39,17 +43,18 @@ function SideNav({ isOpen, activeRoute }) {
   return (
     <Box
       sx={{
-        width: isOpen ? 200 : 80,
+        width: navWidth,
         transition: "width 0.3s",
         backgroundColor: "#1F2937",
         color: "white",
-        display: "flex",
+        display: navState === "hidden" ? "none" : "flex",
         flexDirection: "column",
-              padding: "10px",
+        padding: showIcons ? "10px" : 0,
+        borderRight: "1px solid grey",
+        height: '100vh',
       }}
     >
-      {/* Conditional rendering of section headers */}
-      {isOpen && (
+      {showText && (
         <Typography variant="overline" sx={{ mb: 1, ml: 1 }}>
           Menu
         </Typography>
@@ -60,22 +65,24 @@ function SideNav({ isOpen, activeRoute }) {
           onClick={() => handleNavigation("/user/dashboard")}
           sx={{ ...hoverStyle, ...(activeRoute === "/user/dashboard" ? activeStyle : {}) }}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <Badge
-              color="success"
-              variant={isOpen ? "dot" : "standard"}
-              invisible={activeRoute !== "/user/dashboard"}
-            >
-              <DashboardIcon />
-            </Badge>
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="Dashboard" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <Badge
+                color="success"
+                variant={showText ? "dot" : "standard"}
+                invisible={activeRoute !== "/user/dashboard"}
+              >
+                <DashboardIcon />
+              </Badge>
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="Dashboard" />}
         </ListItem>
       </List>
 
       <Box sx={{ height: "20px" }} />
 
-      {isOpen && (
+      {showText && (
         <Typography variant="overline" sx={{ mb: 1, ml: 1 }}>
           Transportation
         </Typography>
@@ -86,27 +93,46 @@ function SideNav({ isOpen, activeRoute }) {
           onClick={() => handleNavigation("/user/my-rides")}
           sx={{ ...hoverStyle, ...(activeRoute === "/user/my-rides" ? activeStyle : {}) }}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <DirectionsCarIcon />
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="My Rides" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <DirectionsCarIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="My Rides" />}
         </ListItem>
+
+        <ListItem
+          button
+          onClick={() => handleNavigation("/user/location")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/user/location" ? activeStyle : {}) }}
+        >
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <PlaceIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="My Locations" />}
+        </ListItem>
+        
 
         <ListItem
           button
           onClick={() => handleNavigation("/user/promotions")}
           sx={{ ...hoverStyle, ...(activeRoute === "/user/promotions" ? activeStyle : {}) }}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <LocalOfferIcon />
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="Promotions" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <LocalOfferIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="Promotions" />}
         </ListItem>
+
       </List>
 
       <Box sx={{ height: "20px" }} />
 
-      {isOpen && (
+      {showText && (
         <Typography variant="overline" sx={{ mb: 1, ml: 1 }}>
           Management
         </Typography>
@@ -117,10 +143,12 @@ function SideNav({ isOpen, activeRoute }) {
           onClick={() => handleNavigation("/user/profile")}
           sx={{ ...hoverStyle, ...(activeRoute === "/user/profile" ? activeStyle : {}) }}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <PersonIcon />
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="Profile" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <PersonIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="Profile" />}
         </ListItem>
 
         <ListItem
@@ -128,10 +156,12 @@ function SideNav({ isOpen, activeRoute }) {
           onClick={() => handleNavigation("/user/settings")}
           sx={{ ...hoverStyle, ...(activeRoute === "/user/settings" ? activeStyle : {}) }}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <SettingsIcon />
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="Settings" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <SettingsIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="Settings" />}
         </ListItem>
 
         <ListItem
@@ -139,10 +169,12 @@ function SideNav({ isOpen, activeRoute }) {
           onClick={() => handleNavigation("/user/logout")}
           sx={hoverStyle}
         >
-          <ListItemIcon sx={{ color: "white" }}>
-            <LogoutIcon />
-          </ListItemIcon>
-          {isOpen && <ListItemText primary="Logout" />}
+          {showIcons && (
+            <ListItemIcon sx={{ color: "white" }}>
+              <LogoutIcon />
+            </ListItemIcon>
+          )}
+          {showText && <ListItemText primary="Logout" />}
         </ListItem>
       </List>
     </Box>

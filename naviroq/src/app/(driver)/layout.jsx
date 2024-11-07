@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import SideNav from "@/components/Driver/SideNav/SideNav";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import AdminUtils from "@/server/utils/AdminUtils";
+import AdminUtils from "@/utils/AdminUtils";
 import LazyLoading from "@/components/LazyLoading/LazyLoading";
 
 function DriverLayout({ children }) {

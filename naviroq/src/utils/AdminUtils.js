@@ -1,15 +1,42 @@
 'use client';
-import { axiosPublic, axiosPrivate } from "@/server/utils/AxiosInstance"
-
-
-// utilities for the FE
+import { axiosPublic, axiosPrivate } from "@/utils/AxiosInstance"
+import useClientStore from "@/store/useClientStore";
+import nacl from "tweetnacl";
+import { encodeBase64, decodeBase64, decodeUTF8 } from "tweetnacl-util";
+const publicKeyBase64 = process.env.NEXT_PUBLIC_TWEETNACL_PUBLIC_KEY;
 
 class AdminUtils {
+
+    // Encrypt data using the PEM public key stored as an environment variable
+    static async encryptDataWithTweetNaCl(data) { 
+        const publicKey = decodeBase64(publicKeyBase64);
+        const messageUint8 = decodeUTF8(JSON.stringify(data));
+    
+        // Generate a nonce for encryption
+        const nonce = nacl.randomBytes(nacl.box.nonceLength);
+        const encryptedMessage = nacl.box(messageUint8, nonce, publicKey, nacl.box.keyPair().secretKey);
+    
+        return {
+            encryptedMessage: encodeBase64(encryptedMessage),
+            nonce: encodeBase64(nonce),
+        };
+
+    }
+        
+    // Usage example with Zustand storage
+    static async encryptAndStoreProfile(profileData) {
+        try {
+            const encryptedData = await AdminUtils.encryptDataWithTweetNaCl(profileData, publicKeyBase64);
+            useClientStore.getState().setEncryptedClientData(encryptedData);
+            return;
+        } catch (error) {
+            console.error("Failed to encrypt and store data with TweetNaCl:", error);
+        }
+    }
+
     // to be used for Registration. Login and SetPassword Specific operations
     static async encryptCredentials(data) {
         const publicKeyPem = process.env.NEXT_PUBLIC_PEM_PUBLIC_KEY;
-        // Convert PEM to ArrayBuffer
-        // sourcery skip: avoid-function-declarations-in-blocks
         function pemToArrayBuffer(pem) {
             const b64 = pem.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, '');
             const binary = window.atob(b64);
@@ -31,15 +58,15 @@ class AdminUtils {
             const importedKey = await window.crypto.subtle.importKey(
                 "spki",
                 publicKeyBuffer, {
-                    name: "RSA-OAEP",
-                    hash: "SHA-256",
-                },
+                name: "RSA-OAEP",
+                hash: "SHA-256",
+            },
                 false, ["encrypt"]
             );
 
             const encryptedData = await window.crypto.subtle.encrypt({
-                    name: "RSA-OAEP"
-                },
+                name: "RSA-OAEP"
+            },
                 importedKey,
                 dataBuffer
             );
@@ -93,7 +120,6 @@ class AdminUtils {
             throw error;
         }
     }
-
 
     static async clientRegistration(obj) {
         console.log({ obj })
@@ -150,9 +176,98 @@ class AdminUtils {
         }
     }
 
+    static async setClientLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/client/location',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async addClientLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/client/location/add',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async deleteClientLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "DELETE",
+                url: '/client/location/delete',
+                data: obj,
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async editClientLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/client/location/edit',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async dataDecryption(obj) {
+        try {
+            const response = await axiosPublic({
+                method: "POST",
+                url: '/client/decrypt',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
     // driver registration
     static async driverRegistration(obj) {
-        console.log({ obj })
         try {
             const response = await axiosPublic({
                 method: "POST",

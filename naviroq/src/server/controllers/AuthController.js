@@ -1,7 +1,11 @@
 import crypto from 'crypto';
+const ivLength = 12;
 
-//  utilitis for backend
+const nacl = require("tweetnacl");
+const util = require("tweetnacl-util");
+
 class AuthController {
+
 
     static async hashPassword(password) {
         try {
@@ -40,16 +44,29 @@ class AuthController {
         });
     }
 
+    // Load private key from environment (ensure it's PEM formatted)
+    static async decryptData(encryptedData, nonce, privateKeyBase64, publicKeyBase64) {
+        const privateKey = util.decodeBase64(privateKeyBase64);
+        const publicKey = util.decodeBase64(publicKeyBase64);
+        const message = util.decodeBase64(encryptedData);
+        const nonceUint8 = util.decodeBase64(nonce);
+
+        const decryptedMessage = nacl.box.open(message, nonceUint8, publicKey, privateKey);
+        if (!decryptedMessage) throw new Error("Decryption failed.");
+
+        return JSON.parse(util.encodeUTF8(decryptedMessage));
+    }
+
     // Function to decrypt data (AES-GCM decryption) for Password and login operations
     static async decryptedCredentials(encryptedData) {
-        const rawKey = process.env.NEXT_PUBLIC_PEM_PRIVATE_KEY;
+        const rawKey = process.env.PEM_PRIVATE_KEY;
         try {
             const buffer = Buffer.from(encryptedData, 'base64');
             const decrypted = crypto.privateDecrypt({
-                    key: rawKey,
-                    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-                    oaepHash: "sha256",
-                },
+                key: rawKey,
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+                oaepHash: "sha256",
+            },
                 buffer
             );
             const jsonString = decrypted.toString('utf8');
@@ -72,7 +89,6 @@ class AuthController {
             if (!encryptedId) {
                 throw new Error("Invalid Authorization header");
             }
-
             const userId = await AuthController.decryptUserId(encryptedId);
             if (!userId) {
                 throw new Error("Invalid user ID");

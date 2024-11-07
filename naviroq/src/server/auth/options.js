@@ -9,7 +9,6 @@ import Apple from "next-auth/providers/apple";
 import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 
-// Initialize NextAuth with providers
 const options = {
     secret: process.env.AUTH_SECRET,
     providers: [
@@ -22,7 +21,7 @@ const options = {
                 email: {},
                 password: {},
             },
-            authorize: async(credentials) => {
+            authorize: async (credentials) => {
                 try {
                     // Ensure connection to MongoDB
                     await dbClient.connect();
@@ -30,21 +29,16 @@ const options = {
                     // Load the models (all roles use the same Navigator base schema)
                     const { Navigator } = await getNavigatorModels();
 
-                    // Find the user by email (Navigator is the base model for all roles)
+                    // Find the user by email
                     const user = await Navigator.findOne({ email: credentials.email }).select("+password");
-                    if (!user) {
-                        throw new Error("User not found");
-                    }
+                    if (!user) throw new Error("User not found");
 
                     // Check if the password is correct
                     const isPasswordValid = await AuthController.comparePassword(credentials.password, user.password);
-                    if (!isPasswordValid) {
-                        throw new Error("Invalid credentials");
-                    }
+                    if (!isPasswordValid) throw new Error("Invalid credentials");
 
-                    // Return user object with role (used in JWT and session)
+                    // Return minimal user object for token (id and role)
                     return { id: user._id, role: user.role };
-
                 } catch (error) {
                     console.error("Authorization error:", error.message);
                     return null;
@@ -53,27 +47,27 @@ const options = {
         }),
     ],
     session: {
-        strategy: 'jwt', // Use JWT-based sessions instead of database sessions
-        maxAge: 6 * 30 * 24 * 60 * 60, // 6 months session length
+        strategy: 'jwt',
+        maxAge: 3 * 30 * 24 * 60 * 60, // Set a shorter 3-month expiration for security
         updateAge: 24 * 60 * 60, // Update the session every 24 hours
-        encryption: true, // Enable session encryption
+        encryption: true,
     },
     jwt: {
-        encryption: true, // Enable encryption for JWTs
-        signingKey: process.env.NEXT_PUBLIC_JWT_SIGNING_PRIVATE_KEY, // Provide a private key for signing JWTs
-        encryptionKey: process.env.NEXT_PUBLIC_JWT_ENCRYPTION_PRIVATE_KEY, // Provide a private key for encrypting JWTs
+        encryption: true, // Enable JWE encryption for JWT
+        signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Use non-public signing key
+        encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Use non-public encryption key
     },
     callbacks: {
         async jwt({ token, user }) {
-            // When a user logs in for the first time, store the id and role
+            // Include only id and role in the token for minimal exposure
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
             }
-            return token; // Only return id and role in the token
+            return token;
         },
         async session({ session, token }) {
-            // Attach id and role to the session object
+            // Attach minimal data to the session object for frontend access
             session.user.id = token.id;
             session.user.role = token.role;
             return session;
