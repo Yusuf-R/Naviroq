@@ -12,7 +12,6 @@ export async function PATCH(request) {
         if (userId instanceof Error) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
-        console.log({ userId });
         const obj = await request.json();
         if (!obj) {
             return NextResponse.json({ message: "Invalid data" }, { status: 400 });

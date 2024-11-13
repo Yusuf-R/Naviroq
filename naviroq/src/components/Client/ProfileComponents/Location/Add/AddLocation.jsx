@@ -88,14 +88,6 @@ function AddLocation() {
         });
     }, [setValue]);
 
-
-    useEffect(() => {
-        if (pathname.includes('set')) {
-            setActiveTab('/user/location/set');
-        }
-    }, [pathname]);
-
-
     const mutation = useMutation({
         mutationKey: ["AddClientLocation"],
         mutationFn: AdminUtils.addClientLocation
@@ -115,8 +107,7 @@ function AddLocation() {
                 toast.success("Location added successfully");
                 setIsLoading(false);
                 reset();
-                router.refresh();
-
+                window.location.reload();
             },
             onError: (error) => {
                 toast.error("Failed to add location");
@@ -127,9 +118,7 @@ function AddLocation() {
     };
 
     useEffect(() => {
-        if (pathname.includes('edit')) {
-            setActiveTab('/user/location/edit');
-        } else if (pathname.includes('view')) {
+        if (pathname.includes('view')) {
             setActiveTab('/user/location/view');
         } else if (pathname.includes('add')) {
             setActiveTab('/user/location/add');
@@ -189,20 +178,6 @@ function AddLocation() {
                         }}
                     />
                     <Tab
-                        label="Edit-Location"
-                        component={Link}
-                        href="/user/location/edit"
-                        value="/user/location/edit"
-                        sx={{
-                            color: "#FFF",
-                            fontWeight: 'bold',
-                            fontSize: xSmall || small || medium || large ? '0.6rem' : '0.9rem',
-                            "&.Mui-selected": {
-                                color: "#46F0F9",
-                            },
-                        }}
-                    />
-                    <Tab
                         label="Add-Location"
                         component={Link}
                         href="/user/location/add"
@@ -230,6 +205,7 @@ function AddLocation() {
                     padding: '10px',
                     width: '100%',
                     backgroundColor: '#FFF',
+                    p: 2,
                 }}
             >
                 <Grid container spacing={4}>
@@ -250,7 +226,7 @@ function AddLocation() {
                     </Grid>
 
                     <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
-                    <Controller
+                        <Controller
                             name="category"
                             control={control}
                             render={({ field }) => (
@@ -261,7 +237,7 @@ function AddLocation() {
                                     fullWidth
                                     error={!!errors.category}
                                     helperText={errors.category?.message || ""}
-                                    value={field.value || ''} 
+                                    value={field.value || ''}
                                 >
                                     {locationCategory.map((cat) => (
                                         <MenuItem key={cat} value={cat}>{cat}</MenuItem>
@@ -365,14 +341,21 @@ function AddLocation() {
                 <br />
                 <Stack direction='row' gap={2} sx={{ justifyContent: 'flex-start' }}>
                     <Link href="/user/location/view">
-                        <Button variant="contained" color='info'> Back </Button>
+                        <Button variant="contained" color='error'> Back </Button>
                     </Link>
                     <Button
                         variant="contained"
                         color="success"
-                        endIcon={isLoading && <CircularProgress size={20} sx={{ color: 'white', ml: 1 }} />}
                         type="submit"
-                        disabled={isLoading}
+                        aria-label="Add location"
+                        endIcon={isLoading && <CircularProgress size={20} color="inherit" sx={{ color: 'white', ml: 1 }} />}
+                        onClick={(e) => isLoading && e.preventDefault()} // Prevent default click if updating
+                        sx={{
+                            ...(isLoading && {
+                                pointerEvents: 'none',  // Disable interaction
+                                opacity: 1,             // Maintain original opacity
+                            }),
+                        }}
                     >
                         {isLoading ? 'Saving...' : 'Save'}
                     </Button>

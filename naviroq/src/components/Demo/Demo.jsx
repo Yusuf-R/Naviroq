@@ -3,6 +3,7 @@ import {
     CircularProgress,
     Button,
     Box,
+    Typography,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -16,21 +17,24 @@ function Demo() {
     };
     return (
         <>
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-            }}>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={onCLick}
-                disabled={loading}
+            <Box
+                sx={{
+                    height: "100vh",
+                    width: "100vw",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',  // Semi-transparent background
+                    background: 'linear-gradient(to right, #232526, #414345)',
+
+                }}
             >
-                {loading ? <CircularProgress size={20} /> : "Click Me"}
-                </Button>
-                </Box>
+                <CircularProgress color="primary" size={60} />
+                <Typography variant="h6" sx={{ mt: 2, color: "#FFF" }}>
+                    Loading map, please wait...
+                </Typography>
+            </Box>
         </>
     )
 }

@@ -2,7 +2,7 @@
 import TopNav from "@/components/Driver/TopNav/TopNav";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SideNav from "@/components/Driver/SideNav/SideNav";
 import { useRouter } from "next/navigation";
@@ -14,10 +14,18 @@ function DriverLayout({ children }) {
     const router = useRouter();
     const theme = useTheme();
     const medium = useMediaQuery(theme.breakpoints.down("md"));
+    const [navState, setNavState] = useState("full"); // "full", "icon", "hidden"
 
-    const [isSideNavOpen, setSideNavOpen] = useState(true);
+    // Toggle between the three nav states
+    const handleToggleNavState = () => {
+        setNavState((prevState) => {
+            if (prevState === "full") return "icon";
+            if (prevState === "icon") return "hidden";
+            return "full";
+        });
+    };
 
-    const handleToggleSideNav = () => setSideNavOpen(!isSideNavOpen);
+    const sideNavWidth = navState === "full" ? 210 : navState === "icon" ? 80 : 0;
 
     const queryClient = useQueryClient();
     const { driverProfile } = queryClient.getQueryData(["DriverData"]) || {};
@@ -29,6 +37,25 @@ function DriverLayout({ children }) {
         enabled: !driverProfile,
     });
 
+    const effectiveDriverData = driverProfile || data;
+
+    const encryptAndStoreData = useCallback(async () => {
+        try {
+            if (effectiveDriverData) {
+                await AdminUtils.encryptAndStoreProfile(effectiveDriverData);
+            }
+        } catch (error) {
+            console.log('Encryption Failed');
+            console.error("Encryption Error:", error);
+        }
+    }, [effectiveDriverData]);
+
+
+    // Encrypt and store only when effectiveClientData changes
+    useEffect(() => {
+        encryptAndStoreData();
+    }, [encryptAndStoreData]);
+
     if (isLoading) {
         return <LazyLoading />;
     }
@@ -36,45 +63,50 @@ function DriverLayout({ children }) {
         router.push("/auth/login");
     }
 
-    const effectiveDriverData = driverProfile || data;
-
     return (
         <Box
             sx={{
                 display: "flex",
                 height: "100vh",
-                overflow: "hidden", // Prevent horizontal scrolling
-                backgroundColor: "#FFF",
+                width: "100vw",
+                overflow: "hidden",
             }}
         >
             {/* Side Navigation */}
-            <SideNav
-                isOpen={isSideNavOpen}
-                sx={{ width: isSideNavOpen ? 240 : 0, transition: "width 0.3s" }} // Ensure a fixed width
-            />
-
-            {/* Main Content Wrapper */}
             <Box
                 sx={{
-                    flex: 1,
+                    width: sideNavWidth,
+                    transition: "width 0.3s",
+                    backgroundColor: "#1F2937",
+                    overflow: "hidden",
+                    position: "relative",
+                }}
+            >
+                <SideNav navState={navState} activeRoute={router.pathname} />
+            </Box>
+
+            {/* Main Wrapper */}
+            <Box
+                sx={{
                     display: "flex",
                     flexDirection: "column",
-                    overflow: "hidden", // Prevent scroll
+                    flex: 1,
+                    overflow: "auto",
                 }}
             >
                 {/* Top Navigation */}
-                <TopNav
-                    onToggleSideNav={handleToggleSideNav}
-                    driverProfile={effectiveDriverData}
-                    sx={{ maxWidth: "100vw" }} // Prevent top navigation overflow
-                />
+                <Box sx={{ flexShrink: 0 }}>
+                    <TopNav
+                        onToggleSideNav={handleToggleNavState}
+                        driverProfile={effectiveDriverData}
+                    />
+                </Box>
 
-                {/* Main Content */}
+                {/* Main Content Area */}
                 <Box
                     sx={{
                         flex: 1,
-                        overflow: "hidden", // Ensure no extra scrolling
-                        display: "flex",
+                        padding: "0px",
                         backgroundColor: "#F3F4F6",
                     }}
                 >
@@ -82,6 +114,7 @@ function DriverLayout({ children }) {
                 </Box>
             </Box>
         </Box>
+
     );
 }
 

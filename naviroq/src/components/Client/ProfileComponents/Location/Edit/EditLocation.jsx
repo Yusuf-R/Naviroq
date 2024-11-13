@@ -20,7 +20,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import AdminUtils from "@/utils/AdminUtils";
 import { CircularProgress } from "@mui/material";
-import { set } from 'mongoose';
 
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -350,18 +349,24 @@ function EditLocation({ clientProfile, locationData }) {
 <br />
                 <Stack direction='row' gap={2} sx={{ justifyContent: 'flex-start' }}>
                     <Link href="/user/location/view">
-                        <Button variant="contained" color='info' title='Back'> Back </Button>
+                        <Button variant="contained" color='error' aria-label="Baack"> Back </Button>
                     </Link>
                     <Button
                         variant="contained"
                         color="success"
-                        endIcon={isLoading && <CircularProgress size={20} sx={{ color: 'red', ml: 1 }} />}
                         type="submit"
-                        disabled={isLoading}
+                        aria-label="Add location"
+                        endIcon={isLoading && <CircularProgress size={20} color="inherit" sx={{ color: 'white', ml: 1 }} />}
+                        onClick={(e) => isLoading && e.preventDefault()} // Prevent default click if updating
+                        sx={{
+                            ...(isLoading && {
+                                pointerEvents: 'none',  // Disable interaction
+                                opacity: 1,             // Maintain original opacity
+                            }),
+                        }}
                     >
                         {isLoading ? 'Updating...' : 'Save'}
                     </Button>
-
                 </Stack>
             </Box>
         </Box>

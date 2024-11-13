@@ -136,6 +136,27 @@ class AuthController {
 
     }
 
+    static async logout(request) {
+        try {
+            const authHeader = request.headers.get("Authorization");
+            if (!authHeader) {
+                throw new Error("No Authorization header found");
+            }
+            const encryptedId = authHeader.split(" ")[1]
+            if (!encryptedId) {
+                throw new Error("Invalid Authorization header");
+            }
+            const userId = await AuthController.decryptUserId(encryptedId);
+            if (!userId) {
+                throw new Error("Invalid user ID");
+            }
+            return userId;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Unauthorized");
+        }
+    }
+
 
 
 }

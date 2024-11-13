@@ -1,5 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -14,16 +16,55 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
 import PlaceIcon from '@mui/icons-material/Place';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import { toast } from "sonner";
+import AdminUtils from "@/utils/AdminUtils";
+import { signOut } from 'next-auth/react';
+import { CircularProgress } from "@mui/material";
+
 
 function SideNav({ navState, activeRoute }) {
   const router = useRouter();
+  const [confirmExit, setConfirmExit] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const mutation = useMutation({
+    mutationKey: ['Logout'],
+    mutationFn: AdminUtils.clientLogout,
+    onSuccess: () => {
+      signOut({ callbackUrl: '/auth/user' }); // Redirects after logout
+      toast.success('Logged out successfully');
+      setLoggingOut(false);
+      setConfirmExit(false); // Close dialog
+    },
+    onError: (error) => {
+      console.error('Logout error:', error);
+      toast.error('Logout failed. Please try again.');
+      setLoggingOut(false);
+    },
+  });
+  
+  const handleLogout = () => {
+    try {
+      setLoggingOut(true);
+      mutation.mutate();
+    } catch (err) {
+      console.error('Logout error:', err);
+      setLoggingOut(false);
+      toast.error('Logout failed. Please try again.');
+    }
+  };
 
   const handleNavigation = (route) => {
     router.push(route);
   };
 
-  // Determine width based on navState
-  const navWidth = navState === "full" ? 240 : navState === "icon" ? 80 : 0;
+  const navWidth = navState === "full" ? 210 : navState === "icon" ? 80 : 0;
   const showText = navState === "full";
   const showIcons = navState !== "hidden";
 
@@ -113,7 +154,6 @@ function SideNav({ navState, activeRoute }) {
           )}
           {showText && <ListItemText primary="My Locations" />}
         </ListItem>
-        
 
         <ListItem
           button
@@ -127,7 +167,6 @@ function SideNav({ navState, activeRoute }) {
           )}
           {showText && <ListItemText primary="Promotions" />}
         </ListItem>
-
       </List>
 
       <Box sx={{ height: "20px" }} />
@@ -166,7 +205,7 @@ function SideNav({ navState, activeRoute }) {
 
         <ListItem
           button
-          onClick={() => handleNavigation("/user/logout")}
+          onClick={() => setConfirmExit(true)}  // Show confirmation dialog before logout
           sx={hoverStyle}
         >
           {showIcons && (
@@ -177,6 +216,36 @@ function SideNav({ navState, activeRoute }) {
           {showText && <ListItemText primary="Logout" />}
         </ListItem>
       </List>
+
+      {/* Confirmation Dialog for Logout */}
+      <Dialog open={confirmExit} onClose={() => setConfirmExit(false)}>
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to logout?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmExit(false)} variant="contained" color="success">
+            No
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={(e) => {
+              if (loggingOut) e.preventDefault();
+              else handleLogout();
+            }}
+            endIcon={loggingOut && <CircularProgress size={20} color="inherit" />}
+            sx={{
+              ...(loggingOut && {
+                pointerEvents: 'none', // Disable interaction while maintaining appearance
+                opacity: 1,
+              }),
+            }}
+          >
+            {loggingOut ? 'Logging out...' : 'Yes'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

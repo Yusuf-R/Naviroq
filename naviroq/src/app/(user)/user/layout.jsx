@@ -27,7 +27,7 @@ function ClientLayout({ children }) {
     };
     
     // Set width of SideNav based on its state
-    const sideNavWidth = navState === "full" ? 240 : navState === "icon" ? 80 : 0;
+    const sideNavWidth = navState === "full" ? 210 : navState === "icon" ? 80 : 0;
 
     const queryClient = useQueryClient();
     const { clientProfile } = queryClient.getQueryData(["ClientData"]) || {};
@@ -93,7 +93,7 @@ function ClientLayout({ children }) {
                     display: "flex",
                     flexDirection: "column",
                     flex: 1,
-                    overflow: "hidden",
+                    overflow: "auto",
                 }}
             >
                 {/* Top Navigation */}

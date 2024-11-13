@@ -1,6 +1,7 @@
 'use client';
 import { axiosPublic, axiosPrivate } from "@/utils/AxiosInstance"
 import useClientStore from "@/store/useClientStore";
+import useDriverStore from "@/store/useDriverStore";
 import nacl from "tweetnacl";
 import { encodeBase64, decodeBase64, decodeUTF8 } from "tweetnacl-util";
 const publicKeyBase64 = process.env.NEXT_PUBLIC_TWEETNACL_PUBLIC_KEY;
@@ -27,7 +28,11 @@ class AdminUtils {
     static async encryptAndStoreProfile(profileData) {
         try {
             const encryptedData = await AdminUtils.encryptDataWithTweetNaCl(profileData, publicKeyBase64);
-            useClientStore.getState().setEncryptedClientData(encryptedData);
+            if (profileData.role === 'Client') {
+                useClientStore.getState().setEncryptedClientData(encryptedData);
+            } else if (profileData.role === 'Driver') {
+                useDriverStore.getState().setEncryptedDriverData(encryptedData);
+            }
             return;
         } catch (error) {
             console.error("Failed to encrypt and store data with TweetNaCl:", error);
@@ -159,6 +164,23 @@ class AdminUtils {
         }
     }
 
+    static async clientLogout() {
+        try {
+            const response = await axiosPrivate({
+                method: "POST",
+                url: '/client/logout',
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
     static async clientProfile() {
         try {
             const response = await axiosPrivate({
@@ -173,6 +195,52 @@ class AdminUtils {
         } catch (error) {
             console.log({ error });
             throw new Error(error);
+        }
+    }
+
+    static async updateBiodata(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/client/profile/update',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async clientAvatar(formData) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/client/profile/avatar',
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                // Add this to properly handle the FormData
+                transformRequest: [function (data) {
+                    return data;
+                }],
+            });
+            
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                console.error('Upload response:', response);
+                throw new Error(response.data?.error || 'Upload failed');
+            }
+        }
+        catch (error) {
+            console.error('Upload error:', error);
+            throw error;
         }
     }
 
@@ -304,6 +372,23 @@ class AdminUtils {
         }
     }
 
+    static async driverLogout() {
+        try {
+            const response = await axiosPrivate({
+                method: "POST",
+                url: '/driver/logout',
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
     // driver profile 
     static async driverProfile() {
         try {
@@ -321,6 +406,109 @@ class AdminUtils {
             throw new Error(error);
         }
     }
+
+    static async driverAvatar(formData) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/driver/profile/avatar',
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                // Add this to properly handle the FormData
+                transformRequest: [function (data) {
+                    return data;
+                }],
+            });
+            
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                console.error('Upload response:', response);
+                throw new Error(response.data?.error || 'Upload failed');
+            }
+        }
+        catch (error) {
+            console.error('Upload error:', error);
+            throw error;
+        }
+    }
+
+    static async setDriverLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/driver/location',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async addDriverLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/driver/location/add',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async deleteDriverLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "DELETE",
+                url: '/driver/location/delete',
+                data: obj,
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+    static async editDriverLocation(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/driver/location/edit',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
+
+   
 
 
 

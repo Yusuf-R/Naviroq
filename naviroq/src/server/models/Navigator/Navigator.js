@@ -39,8 +39,8 @@ const NavigatorSchema = new Schema({
     avatar: { type: String, default: null },
     phoneNumber: { type: String, default: null },
     nextOfKin: { type: String, default: null },
-    nexOfKinRelatoinship: { type: String, default: null },
-    nexOfKinPhone: { type: String, default: null },
+    nextOfKinRelationship: { type: String, default: null },
+    nextOfKinPhone: { type: String, default: null },
     dob: {type: String, default: Date, default: null},
     gender: { type: String, enum: ['Male', 'Female'], default: null },
     avatarConfirmation: {type: String, enum: ['Pending', 'Requested', 'Accepted', 'Rejected'], default: 'Accepted'},
@@ -92,8 +92,25 @@ const AdminSchema = new Schema({
 
 // Driver-specific schema with vehicle details
 const DriverSchema = new Schema({
+    addresses: {
+        type: [AddressSchema], // Store multiple addresses for quick access
+        default: [],
+    },
+    rideHistory: [
+        {
+            pickup: AddressSchema,
+            destination: AddressSchema,
+            driverId: { type: Schema.Types.ObjectId, ref: "Driver" },
+            timestamp: { type: Date, default: Date.now },
+        }
+    ],
     vehicleType: { type: String, required: false },
     licenseNumber: { type: String, required: false },
+    availabilityStatus: {
+        type: String,
+        enum: ['Online', 'Busy', 'Offline'],
+        default: 'Offline',
+    },
 });
 
 // Model Initialization

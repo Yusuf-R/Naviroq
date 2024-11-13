@@ -3,6 +3,7 @@ import dbClient from "@/server/database/mongoDB";
 import getNavigatorModels from "@/server/models/Navigator/Navigator";
 import { loginValidator, signUpValidator } from "@/validators/validateAuth";
 import { setLoctionValidator } from "@/validators/locationValidator";
+import { beBioDataValidator } from "@/validators/beBioDataValidator";
 import mongoose from "mongoose";
 
 const { Client } = await getNavigatorModels(); // Load the Client model
@@ -77,6 +78,23 @@ class ClientController {
         } catch (error) {
             console.error("Error in Login:", error.message);
             throw new Error('User login failed');
+        }
+    }
+
+    static async Logout(userId) {
+        try {
+            await dbClient.connect();
+            // Fetch the user profile from the database
+            const clientProfile = await Client.findById(mongoose.Types.ObjectId.createFromHexString(userId));
+            if (!clientProfile) {
+                throw new Error("User not found");
+            }
+            // Close the database connection
+            await dbClient.close();
+            return clientProfile;
+        } catch (error) {
+            console.error("Error in Logout:", error.message);
+            throw new Error('User logout failed');
         }
     }
 
@@ -239,6 +257,77 @@ class ClientController {
         } catch (error) {
             console.error("Error in updateLocation:", error.message);
             throw new Error("Update location failed");
+        }
+    }
+
+    static async UpdateAvatar(userId, url) {
+        try {
+            // Connect to the database
+            await dbClient.connect();
+
+            // Fetch the user profile using the userId
+            const clientProfile = await Client.findById(mongoose.Types.ObjectId.createFromHexString(userId));
+            if (!clientProfile) {
+                throw new Error("User not found");
+            }
+            console.log("clientProfile", clientProfile);
+            console.log("url", url);
+
+            // Update the avatar URL
+            clientProfile.avatar = url;
+
+            // Save the updated profile
+            await clientProfile.save();
+
+            // Close the database connection
+            await dbClient.close();
+
+            return clientProfile;
+        } catch (error) {
+            console.error("Error in UpdateAvatar:", error.message);
+            throw new Error("Update avatar failed");
+        }
+
+    }
+
+    static async UpdateBioData(userId, obj) {
+        try {
+            // Connect to the database
+            await dbClient.connect();
+
+            // Fetch the user profile using the userId
+            const clientProfile = await Client.findById(mongoose.Types.ObjectId.createFromHexString(userId));
+            if (!clientProfile) {
+                throw new Error("User not found");
+            }
+
+            console.log({
+                "data": obj,
+                clientProfile,
+            })
+
+            // cross check with schema validator
+            const { success, data } = beBioDataValidator.safeParse(obj);
+            if (!success) {
+                throw new Error("Bio data validation failed");
+            }
+
+            // Loop through the validated object and update respective fields
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    clientProfile[key] = data[key];
+                }
+            }
+            // Save the updated profile
+            await clientProfile.save();
+
+            // Close the database connection
+            await dbClient.close();
+
+            return clientProfile;
+        } catch (error) {
+            console.error("Error in UpdateBioData:", error.message);
+            throw new Error("Update bio data failed");
         }
     }
 }

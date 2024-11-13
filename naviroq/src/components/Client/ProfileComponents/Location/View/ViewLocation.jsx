@@ -123,7 +123,7 @@ function ViewLocation({ clientProfile }) {
 
     const handleAdd = async () => {
         setLoading(true);
-        router.push('/user/location/set');
+        router.push('/user/location/add');
         setLoading(false);
     };
 

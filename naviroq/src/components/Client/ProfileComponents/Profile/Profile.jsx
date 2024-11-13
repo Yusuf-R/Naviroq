@@ -14,6 +14,9 @@ import Card from '@mui/material/Card';
 import Avatar from '@mui/material/Avatar';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Controller, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import Chip from "@mui/material/Chip";
 import { set } from 'mongoose';
@@ -190,9 +193,8 @@ function Profile({ clientProfile }) {
                         justifyContent: 'space-between',
                         alignItems: isLargeScreen ? 'flex-start' : 'flex-start',  // Align to top for both screens
                         flexWrap: 'nowrap',  // Ensure LHS and RHS remain side by side
-                        height: isLargeScreen ? '100vh' : 'auto',
+                        height: isLargeScreen ? 'auto' : 'auto',
                         padding: isLargeScreen ? '0' : '10px',
-                        overflow: 'scroll',  // Allow RHS to scroll when content overflows
                     }}
                 >
                     {/* LHS */}
@@ -222,7 +224,7 @@ function Profile({ clientProfile }) {
                         >
                             {clientProfile.avatar !== "" ? (
                                 <Avatar
-                                    src={clientProfile.avaatar ? clientProfile.avatar : '/av-1.svg'}
+                                    src={clientProfile.avatar ? clientProfile.avatar : '/av-1.svg'}
                                     alt={clientProfile.email}
                                     sx={{
                                         width: xSmall || small || medium ? 100 : large ? 150 : xLarge ? 200 : 250,
@@ -432,7 +434,7 @@ function Profile({ clientProfile }) {
                                             fontWeight: 'bold',
                                             textAlign: 'center'
                                         }}>
-                                        Personal Info
+                                        Next of Kin Info
                                     </Typography>
                                 </Card>
                             </Grid>

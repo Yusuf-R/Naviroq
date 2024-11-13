@@ -15,8 +15,6 @@ function ClientAvatar() {
 
     // Step 1: Check for the cached original client profile in TanStack
     const clientProfile = queryClient.getQueryData(["ClientData"]);
-    console.log({ clientProfile });
-
     // Step 2: Check Zustand for encrypted data and decrypt if needed
     useEffect(() => {
         async function fetchAndProcessData() {
@@ -64,9 +62,9 @@ function ClientAvatar() {
 
     return (
         <>
-            <Suspense fallback={<LazyLoading/>}>
+            <Suspense fallback={<LazyLoading />}>
                 <Avatar clientProfile={decryptedProfile} />
-                </Suspense>
+            </Suspense>
         </>
     )
 }

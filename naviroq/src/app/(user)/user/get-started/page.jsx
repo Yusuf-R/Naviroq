@@ -13,8 +13,6 @@ function Started() {
 
     // Step 1: Check for the cached original client profile in TanStack
     const clientProfile = queryClient.getQueryData(["ClientData"]);
-    console.log("At get Started");
-    console.log({ clientProfile });
 
     // Step 2: Check Zustand for encrypted data and decrypt if needed
     useEffect(() => {

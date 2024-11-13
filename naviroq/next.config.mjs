@@ -11,6 +11,15 @@ const nextConfig = {
     experimental: {
         forceSwcTransforms: true,
     },
+    
+    images: {
+        remotePatterns: [
+          {
+            protocol: "https",
+            hostname: "res.cloudinary.com",
+          },
+        ],
+      },
 
 };
 

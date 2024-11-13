@@ -157,7 +157,7 @@ function SetLocation({ clientProfile }) {
                     }}
                 >
                     <Grid container spacing={2} columns={12} sx={{ width: "100%", alignItems: "center" }}>
-                        <Grid item size={12}>
+                        <Grid  size={12}>
                             <Card sx={{
                                 background: 'linear-gradient(to right, #000046, #1cb5e0)',
                                 padding: '16px',
@@ -175,7 +175,7 @@ function SetLocation({ clientProfile }) {
                             </Card>
                         </Grid>
 
-                        <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
+                        <Grid  size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
                             <Controller
                                 name="category"
                                 control={control}
@@ -198,7 +198,7 @@ function SetLocation({ clientProfile }) {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 3.5 }}>
+                        <Grid  size={{ xs: 12, sm: 12, md: 12, lg: 3.5 }}>
                             <Controller
                                 name="locationName"
                                 control={control}
@@ -227,7 +227,7 @@ function SetLocation({ clientProfile }) {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 3.5 }}>
+                        <Grid  size={{ xs: 12, sm: 12, md: 12, lg: 3.5 }}>
                             <Controller
                                 name="description"
                                 control={control}
@@ -243,7 +243,7 @@ function SetLocation({ clientProfile }) {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 1.5 }}>
+                        <Grid  size={{ xs: 12, sm: 12, md: 12, lg: 1.5 }}>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -257,7 +257,7 @@ function SetLocation({ clientProfile }) {
                         </Grid>
 
                         {showDashboardButton && (
-                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 1.5 }}>
+                            <Grid  size={{ xs: 12, sm: 12, md: 12, lg: 1.5 }}>
                                 <Button
                                     variant="contained"
                                     color="success"

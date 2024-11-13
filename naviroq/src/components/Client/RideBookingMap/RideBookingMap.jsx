@@ -27,6 +27,7 @@ import { googleMapsLibraries } from "@/server/googleMaps/googleMapsConfig";
 import { toast } from "sonner";
 import WaitingModal from "./WaitingModal";
 const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+import CircularProgress from "@mui/material/CircularProgress";
 
 const mapContainerStyle = {
     height: "100%",
@@ -61,7 +62,33 @@ const styles = `
 }`
     ;
 
-function RideBookingMap() {
+
+// Custom Loading Screen Component
+const LoadingScreen = () => (
+    <Box
+    sx={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',  // Semi-transparent background
+        background: 'linear-gradient(to right, #232526, #414345)',
+
+    }}
+>
+    <CircularProgress color="primary" size={60} />
+    <Typography variant="h6" sx={{ mt: 2, color: "#FFF" }}>
+        Loading map, please wait...
+    </Typography>
+</Box>
+);
+
+
+function RideBookingMap({ clientProfile }) {
+    const [mapCenter, setMapCenter] = useState(null); // Map center for the first address
+    const [mapLoading, setMapLoading] = useState(true); // Map loading state
     const [currentLocation, setCurrentLocation] = useState(null);
     const [pickup, setPickup] = useState("");
     const [destination, setDestination] = useState("");
@@ -110,6 +137,20 @@ function RideBookingMap() {
             { enableHighAccuracy: true }
         );
     }, []);
+
+    // Load the first address for initial map center
+    useEffect(() => {
+        if (clientProfile?.addresses?.length > 0) {
+            const firstAddress = clientProfile.addresses[0];
+            setMapCenter({ lat: firstAddress.latitude, lng: firstAddress.longitude });
+        }
+    }, [clientProfile]);
+
+     // Handle map load to remove the loading screen
+     const handleMapLoad = (map) => {
+        mapRef.current = map;
+        setMapLoading(false); // Map has loaded, hide the loading screen
+    };
 
 
     // Function to handle place changed event
@@ -293,7 +334,7 @@ function RideBookingMap() {
                             size="small"
                             value={pickup}
                             onChange={(e) => setPickup(e.target.value)}
-                            sx={{ width: 250 }}
+                            sx={{ width: 450 }}
                             InputProps={{
                                 endAdornment: (
                                     <LocationOnIcon
@@ -316,7 +357,7 @@ function RideBookingMap() {
                             size="small"
                             value={destination}
                             onChange={(e) => setDestination(e.target.value)}
-                            sx={{ width: 250 }}
+                            sx={{ width: 450 }}
                         />
                     </Autocomplete>
 
@@ -324,7 +365,7 @@ function RideBookingMap() {
                         Confirm
                     </Button>
 
-                    <Button variant="contained" onClick={() => setModalOpen(true)} disabled={!isSearchEnabled}>
+                    <Button variant="contained" color="success" onClick={() => setModalOpen(true)} disabled={!isSearchEnabled}>
                         Search
                     </Button>
 
@@ -339,12 +380,23 @@ function RideBookingMap() {
                     )}
                 </Box>
 
+                {mapLoading && <LoadingScreen />}
+
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
-                    center={currentLocation || { lat: 6.5244, lng: 3.3792 }}
-                    zoom={12}
-                    onLoad={(map) => (mapRef.current = map)}
+                    center={mapCenter || { lat: 6.5244, lng: 3.3792 }}
+                    zoom={mapCenter ? 14 : 12}
+                    onLoad={handleMapLoad} // Set loading to false on load
+                    onUnmount={() => setMapLoading(true)} // Reset loading state on unmount
                 >
+                    {mapCenter && (
+                        <Marker
+                            position={mapCenter}
+                            icon={{
+                                url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Green pin icon
+                            }}
+                        />
+                    )}
                     {currentLocation && <Marker position={currentLocation} label="You" />}
                     {destinationCoords && <Marker position={destinationCoords} label="Destination" />}
                     {directions && <DirectionsRenderer directions={directions} />}
@@ -526,7 +578,7 @@ function RideBookingMap() {
                     </DialogContent>
                 </Dialog>
 
-                // In your JSX, render the WaitingModal if showWaitingModal is true
+                {/* // In your JSX, render the WaitingModal if showWaitingModal is true */}
                 {showWaitingModal && (
                     <WaitingModal
                         tripRequestId={tripRequestId}
