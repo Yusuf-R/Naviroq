@@ -34,7 +34,7 @@ function Avatar({ clientProfile }) {
     const [crop, setCrop] = useState({});
     const [uploading, setUploading] = useState(false);
 
-    const [activeTab, setActiveTab] = useState('/user/profile/avatar');
+    const [activeTab, setActiveTab] = useState('/driver/profile/avatar');
 
     const pathname = usePathname();
     const router = useRouter();
@@ -111,8 +111,8 @@ function Avatar({ clientProfile }) {
 
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationKey: ["ClientAvatar"],
-        mutationFn: AdminUtils.clientAvatar
+        mutationKey: ["DriverAvatar"],
+        mutationFn: AdminUtils.driverAvatar
     });
 
 
@@ -170,7 +170,7 @@ function Avatar({ clientProfile }) {
                     queryClient.invalidateQueries(["ClientData"]);
                     router.refresh();
                     toast.success('Image uploaded successfully');
-                    router.push('/user/profile');
+                    router.push('/driver/profile');
                     setUploading(false);
                 },
                 onError: (error) => {
@@ -195,9 +195,9 @@ function Avatar({ clientProfile }) {
     useEffect(() => {
         // Update activeTab based on pathname
         if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/driver/profile/avatar');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/driver/profile');
         }
     }, [pathname]);
 
@@ -244,8 +244,8 @@ function Avatar({ clientProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/driver/profile"
+                            value="/driver/profile"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -258,8 +258,8 @@ function Avatar({ clientProfile }) {
                         <Tab
                             label="Avatar"
                             component={Link}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/driver/profile/avatar"
+                            value="/driver/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',

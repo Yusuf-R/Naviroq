@@ -59,7 +59,7 @@ const getBadgeStyles = (status) => {
 
 
 function Profile({ driverProfile }) {
-    const [activeTab, setActiveTab] = useState('/user/profile');
+    const [activeTab, setActiveTab] = useState('/driver/profile');
     const pathname = usePathname();
     const router = useRouter();
     // Break Points
@@ -73,26 +73,26 @@ function Profile({ driverProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/driver/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/driver/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/driver/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/driver/profile');
         }
     }, [pathname]);
 
     const editBiodata = async () => {
-        router.push(`/user/profile/update`);
+        router.push(`/driver/profile/update`);
     };
 
     const updateAvatar = async () => {
-        router.push(`/user/profile/avatar`);
+        router.push(`/driver/profile/avatar`);
     };
 
     const location = async () => {
-        router.push(`/user/profile/location`);
+        router.push(`/driver/profile/location`);
     }   
 
 
@@ -126,8 +126,8 @@ function Profile({ driverProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/driver/profile"
+                            value="/driver/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -141,8 +141,8 @@ function Profile({ driverProfile }) {
                         <Tab
                             label="Edit-Biodata"
                             onClick={editBiodata}
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/driver/profile/update"
+                            value="/driver/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -156,8 +156,8 @@ function Profile({ driverProfile }) {
                             label="Avatar"
                             component={Link}
                             onClick={updateAvatar}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/driver/profile/avatar"
+                            value="/driver/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -171,8 +171,8 @@ function Profile({ driverProfile }) {
                             label="Location"
                             component={Link}
                             onClick={location}
-                            href="/user/location"
-                            value="/user/location"
+                            href="/driver/location"
+                            value="/driver/location"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -501,6 +501,127 @@ function Profile({ driverProfile }) {
                                             fontWeight: 'bold'
                                         }}>
                                         {driverProfile.nextOfKinPhone}
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            <br />
+                            <Grid size={12}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #000046, #1cb5e0)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold',
+                                            textAlign: 'center'
+                                        }}>
+                                        Vehicle Info
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            {/* Next of kin Phone */}
+                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="subtitle2"
+                                        sx={{ color: '#46F0F9', fontSize: '14px', mb: 1 }}>
+                                        Vehicle Type
+                                    </Typography>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        {driverProfile.vehicleType}
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            {/* Next of kin Phone */}
+                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="subtitle2"
+                                        sx={{ color: '#46F0F9', fontSize: '14px', mb: 1 }}>
+                                        Vehicle Plate Number
+                                    </Typography>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        {driverProfile.vehiclePlateNumber}
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="subtitle2"
+                                        sx={{ color: '#46F0F9', fontSize: '14px', mb: 1 }}>
+                                        Vehicle  Model
+                                    </Typography>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        {driverProfile.vehicleModel}
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="subtitle2"
+                                        sx={{ color: '#46F0F9', fontSize: '14px', mb: 1 }}>
+                                        Vehicle Color
+                                    </Typography>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        {driverProfile.vehicleColor}
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            {/* Next of kin Phone */}
+                            <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
+                                <Card sx={{
+                                    background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                    padding: '16px',
+                                    borderRadius: '10px'
+                                }}>
+                                    <Typography variant="subtitle2"
+                                        sx={{ color: '#46F0F9', fontSize: '14px', mb: 1 }}>
+                                        Driver License Number
+                                    </Typography>
+                                    <Typography variant="body1"
+                                        sx={{
+                                            color: '#FFF',
+                                            fontSize: xSmall ? '0.8rem' : small ? '1.0rem' : '1.2rem',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        {driverProfile.driverLicenseNumber}
                                     </Typography>
                                 </Card>
                             </Grid>

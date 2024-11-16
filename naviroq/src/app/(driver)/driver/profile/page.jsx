@@ -2,7 +2,7 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import AdminUtils from "@/utils/AdminUtils";
-import useClientStore from "@/store/useClientStore";
+import useDriverStore from "@/store/useDriverStore";
 import LazyLoading from "@/components/LazyLoading/LazyLoading";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,7 @@ const Profile = lazy(() => import("@/components/Driver/ProfileComponents/Profile
 
 function DriverProfile() {
     const [decryptedProfile, setDecryptedProfile] = useState(null);
-    const { encryptedDriverData, setEncryptedDriverData } = useClientStore();
+    const { encryptedDriverData, setEncryptedDriverData } = useDriverStore();
     const queryClient = useQueryClient();
     const router = useRouter();
 

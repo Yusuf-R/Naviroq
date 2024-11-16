@@ -38,7 +38,7 @@ const loadGoogleMapsScript = (callback) => {
 const locationCategory = ["Home", "School", "Office", "MarketPlace", "Mosque", "Church", "Hospital", "Hotel", "SuperMarket", "Others"];
 
 function AddLocation() {
-    const [activeTab, setActiveTab] = useState('/user/location/set');
+    const [activeTab, setActiveTab] = useState('/driver/location/set');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
@@ -119,11 +119,11 @@ function AddLocation() {
 
     useEffect(() => {
         if (pathname.includes('view')) {
-            setActiveTab('/user/location/view');
+            setActiveTab('/driver/location/view');
         } else if (pathname.includes('add')) {
-            setActiveTab('/user/location/add');
+            setActiveTab('/driver/location/add');
         } else {
-            setActiveTab('/user/location');
+            setActiveTab('/driver/location');
         }
     }, [pathname]);
 
@@ -152,8 +152,8 @@ function AddLocation() {
                     <Tab
                         label="Location"
                         component={Link}
-                        href="/user/location"
-                        value="/user/location"
+                        href="/driver/location"
+                        value="/driver/location"
 
                         sx={{
                             color: "#FFF",
@@ -166,8 +166,8 @@ function AddLocation() {
                     />
                     <Tab
                         label="View-Location"
-                        href="/user/location/view"
-                        value="/user/location/view"
+                        href="/driver/location/view"
+                        value="/driver/location/view"
                         sx={{
                             color: "#FFF",
                             fontWeight: 'bold',
@@ -180,8 +180,8 @@ function AddLocation() {
                     <Tab
                         label="Add-Location"
                         component={Link}
-                        href="/user/location/add"
-                        value="/user/location/add"
+                        href="/driver/location/add"
+                        value="/driver/location/add"
                         sx={{
                             color: "#FFF",
                             fontWeight: 'bold',
@@ -340,7 +340,7 @@ function AddLocation() {
                 </Grid>
                 <br />
                 <Stack direction='row' gap={2} sx={{ justifyContent: 'flex-start' }}>
-                    <Link href="/user/location/view">
+                    <Link href="/driver/location/view">
                         <Button variant="contained" color='error'> Back </Button>
                     </Link>
                     <Button

@@ -1,4 +1,4 @@
-// src/lib/auth/options.js
+// src/server/auth/options.js
 import AuthController from "@/server/controllers/AuthController";
 import dbClient from "@/server/database/mongoDB"; // MongoDB client connection
 import getNavigatorModels from "@/server/models/Navigator/Navigator"; // User model

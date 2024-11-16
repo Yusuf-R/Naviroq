@@ -11,7 +11,7 @@ import Tab from "@mui/material/Tab";
 import Avatar from '@mui/material/Avatar';
 
 function LandingPageLocation() {
-    const [activeTab, setActiveTab] = useState('/user/location');
+    const [activeTab, setActiveTab] = useState('/driver/location');
     const router = useRouter();
     const pathname = usePathname();
 
@@ -29,17 +29,17 @@ function LandingPageLocation() {
     useEffect(() => {
         // Update activeTab based on pathname
         if (pathname.includes('add')) {
-            setActiveTab('/user/location/add');
+            setActiveTab('/driver/location/add');
         } else if (pathname.includes('view')) {
-            setActiveTab('/user/location/view');
+            setActiveTab('/driver/location/view');
         } else {
-            setActiveTab('/user/location');
+            setActiveTab('/driver/location');
         }
     }, [pathname]);
 
     const headerItems = [
-        { title: 'View-Saved Locations', src: '/view-location.svg', route: '/user/location/view' },
-        { title: 'Add-New Locations', src: '/saved-location.svg', route: '/user/location/add' },
+        { title: 'View-Saved Locations', src: '/view-location.svg', route: '/driver/location/view' },
+        { title: 'Add-New Locations', src: '/saved-location.svg', route: '/driver/location/add' },
     ];
 
     return (
@@ -69,8 +69,8 @@ function LandingPageLocation() {
                         <Tab
                             label="Location"
                             component={Link}
-                            href="/user/location"
-                            value="/user/location"
+                            href="/driver/location"
+                            value="/driver/location"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -83,8 +83,8 @@ function LandingPageLocation() {
                         <Tab
                             label="View-Location"
                             component={Link}
-                            href="/user/location/view"
-                            value="/user/location/view"
+                            href="/driver/location/view"
+                            value="/driver/location/view"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -97,8 +97,8 @@ function LandingPageLocation() {
                         <Tab
                             label="Add-Location"
                             component={Link}
-                            href="/user/location/add"
-                            value="/user/location/add"
+                            href="/driver/location/add"
+                            value="/driver/location/add"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',

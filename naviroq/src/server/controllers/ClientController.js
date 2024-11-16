@@ -3,7 +3,7 @@ import dbClient from "@/server/database/mongoDB";
 import getNavigatorModels from "@/server/models/Navigator/Navigator";
 import { loginValidator, signUpValidator } from "@/validators/validateAuth";
 import { setLoctionValidator } from "@/validators/locationValidator";
-import { beBioDataValidator } from "@/validators/beBioDataValidator";
+import { clientBioDataValidator } from "@/validators/serverBioDataValidator";
 import mongoose from "mongoose";
 
 const { Client } = await getNavigatorModels(); // Load the Client model
@@ -301,23 +301,24 @@ class ClientController {
                 throw new Error("User not found");
             }
 
-            console.log({
-                "data": obj,
-                clientProfile,
-            })
-
             // cross check with schema validator
-            const { success, data } = beBioDataValidator.safeParse(obj);
+            const { success, data } = clientBioDataValidator.safeParse(obj);
             if (!success) {
                 throw new Error("Bio data validation failed");
             }
 
-            // Loop through the validated object and update respective fields
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    clientProfile[key] = data[key];
+           
+            // Update profile with provided data
+            Object.assign(clientProfile, data);
+
+            // Check for and add any missing fields from the schema
+            Client.schema.eachPath((path) => {
+                if (!clientProfile[path] && Client.schema.paths[path].defaultValue !== undefined) {
+                    // Set to default value if not present and has a default
+                    clientProfile[path] = Client.schema.paths[path].defaultValue;
                 }
-            }
+            });
+
             // Save the updated profile
             await clientProfile.save();
 

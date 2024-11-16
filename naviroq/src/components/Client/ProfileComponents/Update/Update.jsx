@@ -18,7 +18,7 @@ import { CircularProgress } from "@mui/material";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setBioDataValidator } from "@/validators/bioDataValidator";
+import { clientBioDataValidator } from "@/validators/bioDataValidator";
 import { FormControl } from "@mui/material/";
 import MenuItem from "@mui/material/MenuItem";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -67,7 +67,7 @@ function UpdateProfile({ clientProfile }) {
 
     const { control, handleSubmit, setValue, formState: { errors }, reset, getValues } = useForm({
         mode: "onTouched",
-        resolver: zodResolver(setBioDataValidator),
+        resolver: zodResolver(clientBioDataValidator),
         reValidateMode: "onChange",
         defaultValues: {
             email: '',
@@ -208,8 +208,8 @@ function UpdateProfile({ clientProfile }) {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: AdminUtils.updateBiodata,
-        mutationKey: ['UpdateBiodata'],
+        mutationFn: AdminUtils.updateClientBiodata,
+        mutationKey: ['UpdatClientBiodata'],
     })
 
     const updateData = async (objData) => {

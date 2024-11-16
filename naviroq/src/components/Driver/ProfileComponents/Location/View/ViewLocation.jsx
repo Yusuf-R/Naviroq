@@ -37,7 +37,7 @@ const randomColor = () => {
 };
 
 function ViewLocation({ driverProfile }) {
-    const [activeTab, setActiveTab] = useState('/user/location/view');
+    const [activeTab, setActiveTab] = useState('/driver/location/view');
     const [loading, setLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter();
@@ -56,13 +56,13 @@ function ViewLocation({ driverProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/driver/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/driver/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/driver/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/driver/profile');
         }
     }, [pathname]);
 
@@ -74,16 +74,16 @@ function ViewLocation({ driverProfile }) {
 
 
     const editBiodata = async () => {
-        router.push(`/user/profile/update`);
+        router.push(`/driver/profile/update`);
     };
 
     const updateAvatar = async () => {
-        router.push(`/user/profile/avatar`);
+        router.push(`/driver/profile/avatar`);
     };
 
     const onEdit = (objId) => {
         useLocationStore.getState().setLocationData(objId);
-        router.push('/user/location/edit');
+        router.push('/driver/location/edit');
     };
 
     // Handler for opening confirmation dialog
@@ -123,7 +123,7 @@ function ViewLocation({ driverProfile }) {
 
     const handleAdd = async () => {
         setLoading(true);
-        router.push('/user/location/add');
+        router.push('/driver/location/add');
         setLoading(false);
     };
 
@@ -157,8 +157,8 @@ function ViewLocation({ driverProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/driver/profile"
+                            value="/driver/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -172,8 +172,8 @@ function ViewLocation({ driverProfile }) {
                         <Tab
                             label="Edit-Biodata"
                             onClick={editBiodata}
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/driver/profile/update"
+                            value="/driver/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -187,8 +187,8 @@ function ViewLocation({ driverProfile }) {
                             label="Avatar"
                             component={Link}
                             onClick={updateAvatar}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/driver/profile/avatar"
+                            value="/driver/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -201,8 +201,8 @@ function ViewLocation({ driverProfile }) {
                         <Tab
                             label="Location"
                             component={Link}
-                            href="/user/location"
-                            value="/user/location"
+                            href="/driver/location"
+                            value="/driver/location"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',

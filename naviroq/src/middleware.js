@@ -18,6 +18,7 @@ export async function middleware(req) {
 
     const userRole = token.role;
     const { pathname } = req.nextUrl;
+    console.log(`Pathname: ${pathname}, Role: ${userRole}`);
 
     if (userRole === 'Admin') {
         return NextResponse.next();

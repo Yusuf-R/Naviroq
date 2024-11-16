@@ -262,7 +262,7 @@ function SetLocation({ driverProfile }) {
                                     variant="contained"
                                     color="success"
                                     startIcon={<DashboardIcon />}
-                                    onClick={() => router.push("/user/dashboard")}
+                                    onClick={() => router.push("/driver/dashboard")}
                                     fullWidth
                                 >
                                     Dashboard

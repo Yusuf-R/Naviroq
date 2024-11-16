@@ -2,14 +2,14 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import AdminUtils from "@/utils/AdminUtils";
-import useClientStore from "@/store/useClientStore";
+import useDriverStore from "@/store/useDriverStore";
 import LazyLoading from "@/components/LazyLoading/LazyLoading";
 
 const ViewLocation = lazy(() => import("@/components/Driver/ProfileComponents/Location/View/ViewLocation"));
 
 function ViewMyLocations() {
     const [decryptedProfile, setDecryptedProfile] = useState(null);
-    const { encryptedDriverData, setEncryptedDriverData } = useClientStore();
+    const { encryptedDriverData, setEncryptedDriverData } = useDriverStore();
     const queryClient = useQueryClient();
 
     // Step 1: Check for the cached original client profile in TanStack

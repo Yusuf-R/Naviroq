@@ -18,7 +18,7 @@ import { CircularProgress } from "@mui/material";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setBioDataValidator } from "@/validators/bioDataValidator";
+import { driverBioDataValidator } from "@/validators/bioDataValidator";
 import { FormControl } from "@mui/material/";
 import MenuItem from "@mui/material/MenuItem";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -40,14 +40,17 @@ import {
     dobProps,
     nextOfKinRelationship,
     sex,
-    txProps
+    txProps,
+    vType,
+    vColor,
+    vCondition,
 } from "@/utils/data"
 import AdminUtils from '@/utils/AdminUtils';
 
 
 
 function UpdateProfile({ driverProfile }) {
-    const [activeTab, setActiveTab] = useState('/user/profile/update');
+    const [activeTab, setActiveTab] = useState('/driver/profile/update');
     const pathname = usePathname();
     const router = useRouter();
     const [dobDate, setDobDate] = useState(null);
@@ -66,7 +69,7 @@ function UpdateProfile({ driverProfile }) {
 
     const { control, handleSubmit, setValue, formState: { errors }, reset, getValues } = useForm({
         mode: "onTouched",
-        resolver: zodResolver(setBioDataValidator),
+        resolver: zodResolver(driverBioDataValidator),
         reValidateMode: "onChange",
         defaultValues: {
             email: '',
@@ -77,6 +80,13 @@ function UpdateProfile({ driverProfile }) {
             nextOfKinPhone: '',
             dob: '',
             gender: '',
+            vehicleType: '',
+            vehiclePlateNumber: '',
+            vehicleColor: '',
+            vehicleModel: '',
+            vehicleYear: '',
+            vehicleCondition: '',
+            vehicleInsurance: '',
         }
     });
 
@@ -149,13 +159,13 @@ function UpdateProfile({ driverProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/driver/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/driver/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/driver/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/driver/profile');
         }
     }, [pathname]);
 
@@ -170,6 +180,13 @@ function UpdateProfile({ driverProfile }) {
                 nextOfKinPhone: driverProfile.nextOfKinPhone || '',
                 dob: driverProfile.dob || '',
                 gender: driverProfile.gender || '',
+                vehicleType: driverProfile.vehicleType || '',
+                vehiclePlateNumber: driverProfile.vehiclePlateNumber || '',
+                vehicleColor: driverProfile.vehicleColor || '',
+                vehicleModel: driverProfile.vehicleModel || '',
+                vehicleYear: driverProfile.vehicleYear || '',
+                vehicleCondition: driverProfile.vehicleCondition || '',
+                vehicleInsurance: driverProfile.vehicleInsurance || '',
             });
         }
     }, [driverProfile, reset]);
@@ -204,17 +221,56 @@ function UpdateProfile({ driverProfile }) {
         setValue('gender', event.target.value);
     }
 
+    // vehicleType
+    const handleVehicleChange = (event) => {
+        event.preventDefault();
+        setValue('vehicleType', event.target.value);
+    }
+    const getVehicleTypeOptions = () => {
+        return vType.map((type) => (
+            <MenuItem key={type} value={type}
+                sx={{ color: 'white', '&:hover': { backgroundColor: '#051935' } }}>{type}</MenuItem>
+        ));
+    }
+
+    // vehicle Color
+    const handleVehicleColorChange = (event) => {
+        event.preventDefault();
+        setValue('vehicleColor', event.target.value);
+    }
+
+    const getVehicleColorOptions = () => {
+        return vColor.map((type) => (
+            <MenuItem key={type} value={type}
+                sx={{ color: 'white', '&:hover': { backgroundColor: '#051935' } }}>{type}</MenuItem>
+        ));
+    }
+
+    // vehicle condtion
+    const handleVehicleConditionChange = (event) => {
+        event.preventDefault();
+        setValue('vehicleCondition', event.target.value);
+    }
+
+    const getVehicleConditionOptions = () => {
+        return vCondition.map((type) => (
+            <MenuItem key={type} value={type}
+                sx={{ color: 'white', '&:hover': { backgroundColor: '#051935' } }}>{type}</MenuItem>
+        ));
+    }
+
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: AdminUtils.updateBiodata,
-        mutationKey: ['UpdateBiodata'],
+        mutationFn: AdminUtils.updateDriverBiodata,
+        mutationKey: ['UpdateDriverBiodata'],
     })
 
     const updateData = async (objData) => {
+        console.log(objData);
         try {
             setUpdating(true);
-            const { success, data } = setBioDataValidator.safeParse(objData);
+            const { success, data } = driverBioDataValidator.safeParse(objData);
             if (!success) {
                 setUpdating(false);
                 toast.error('Please fill all the required fields');
@@ -226,7 +282,7 @@ function UpdateProfile({ driverProfile }) {
                     queryClient.invalidateQueries(['DriverData']);
                     setUpdating(false);
                     router.refresh();
-                    router.push('/user/profile');
+                    router.push('/driver/profile');
                 },
                 onError: (error) => {
                     console.error('An unexpected error happened:', error);
@@ -281,8 +337,8 @@ function UpdateProfile({ driverProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/driver/profile"
+                            value="/driver/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -295,8 +351,8 @@ function UpdateProfile({ driverProfile }) {
                         />
                         <Tab
                             label="Edit-Biodata"
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/driver/profile/update"
+                            value="/driver/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -566,7 +622,6 @@ function UpdateProfile({ driverProfile }) {
                             </Card>
                         </Grid>
                         <Grid xs={xSmall || small || medium ? 12 : large ? 6 : 6}>
-
                             <Card sx={{
                                 background: 'linear-gradient(to right, #1d4350, #a43931)',
                                 padding: '16px',
@@ -801,11 +856,440 @@ function UpdateProfile({ driverProfile }) {
                                 </FormControl>
                             </Card>
                         </Grid>
+                        <Grid size={12}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #000046, #1cb5e0)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="body1" sx={{
+                                    color: '#FFF',
+                                    fontWeight: 'bold',
+                                    textAlign: 'center'
+                                }}>
+                                    Vehicle Info
+                                </Typography>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Model Name
+                                </Typography>
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehicleModel"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                variant="outlined"
+                                                error={errors.vehicleModel ? true : false}
+                                                helperText={errors.vehicleModel ? errors.vehicleModel.message : ''}
+                                                value={field.value || ''}
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    }
+                                                }}
+                                                sx={{
+                                                    color: "#46F0F9",
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Year
+                                </Typography>
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehicleYear"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                variant="outlined"
+                                                error={errors.vehicleYear ? true : false}
+                                                helperText={errors.vehicleYear ? errors.vehicleYear.message : ''}
+                                                value={field.value || ''}
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    }
+                                                }}
+                                                sx={{
+                                                    color: "#46F0F9",
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Type
+                                </Typography>
+                                {/* Relationship*/}
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehicleType"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                select
+                                                value={field.value || ''}
+                                                error={!!errors.vehicleType}
+                                                helperText={errors.vehicleType ? errors.vehicleType.message : ''}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    handleVehicleChange(e);
+                                                }}
+                                                required
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    },
+                                                    select: {
+                                                        MenuProps: {
+                                                            PaperProps: {
+                                                                sx: {
+                                                                    backgroundColor: '#134357',
+                                                                    color: 'white',
+                                                                    maxHeight: 450,
+                                                                    overflow: 'auto',
+                                                                },
+                                                            },
+                                                        },
+
+                                                    }
+                                                }}
+                                                sx={{
+                                                    '& .MuiSelect-icon': {
+                                                        color: '#fff',
+                                                    },
+                                                    '& .MuiSelect-icon:hover': {
+                                                        color: '#fff',
+                                                    },
+                                                }}>
+                                                <MenuItem value="" sx={{ color: "#4BF807" }}>
+                                                    vehicleType
+                                                </MenuItem>
+                                                {getVehicleTypeOptions()}
+                                            </TextField>
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Plate Number
+                                </Typography>
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehiclePlateNumber"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                variant="outlined"
+                                                error={errors.vehiclePlateNumber ? true : false}
+                                                helperText={errors.vehiclePlateNumber ? errors.vehiclePlateNumber.message : ''}
+                                                value={field.value || ''}
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    }
+                                                }}
+                                                sx={{
+                                                    color: "#46F0F9",
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Color
+                                </Typography>
+                                {/* Relationship*/}
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehicleColor"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                select
+                                                value={field.value || ''}
+                                                error={!!errors.vehicleColor}
+                                                helperText={errors.vehicleColor ? errors.vehicleColor.message : ''}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    handleVehicleColorChange(e);
+                                                }}
+                                                required
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    },
+                                                    select: {
+                                                        MenuProps: {
+                                                            PaperProps: {
+                                                                sx: {
+                                                                    backgroundColor: '#134357',
+                                                                    color: 'white',
+                                                                    maxHeight: 450,
+                                                                    overflow: 'auto',
+                                                                },
+                                                            },
+                                                        },
+
+                                                    }
+                                                }}
+                                                sx={{
+                                                    '& .MuiSelect-icon': {
+                                                        color: '#fff',
+                                                    },
+                                                    '& .MuiSelect-icon:hover': {
+                                                        color: '#fff',
+                                                    },
+                                                }}>
+                                                <MenuItem value="" sx={{ color: "#4BF807" }}>
+                                                    vehicleColor
+                                                </MenuItem>
+                                                {getVehicleColorOptions()}
+                                            </TextField>
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Driver license Number
+                                </Typography>
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="driverLicenseNumber"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                variant="outlined"
+                                                error={errors.driverLicenseNumber ? true : false}
+                                                helperText={errors.driverLicenseNumber ? errors.driverLicenseNumber.message : ''}
+                                                value={field.value || ''}
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    }
+                                                }}
+                                                sx={{
+                                                    color: "#46F0F9",
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
+
+                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+                            <Card sx={{
+                                background: 'linear-gradient(to right, #1d4350, #a43931)',
+                                padding: '16px',
+                                borderRadius: '10px'
+                            }}>
+                                <Typography variant="subtitle2"
+                                    sx={{
+                                        color: '#46F0F9',
+                                        fontSize: '14px',
+                                        mb: 1
+                                    }}>
+                                    Vehicle Condition
+                                </Typography>
+                                {/* Relationship*/}
+                                <FormControl fullWidth>
+                                    <Controller
+                                        name="vehicleCondition"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                select
+                                                value={field.value || ''}
+                                                error={!!errors.vehicleCondition}
+                                                helperText={errors.vehicleCondition ? errors.vehicleCondition.message : ''}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    handleVehicleConditionChange(e);
+                                                }}
+                                                required
+                                                slotProps={{
+                                                    input: {
+                                                        sx: txProps,
+                                                    },
+                                                    inputLabel: {
+                                                        sx: {
+                                                            color: "#FFF",
+                                                            "&.Mui-focused": {
+                                                                color: "white"
+                                                            },
+                                                        }
+                                                    },
+                                                    select: {
+                                                        MenuProps: {
+                                                            PaperProps: {
+                                                                sx: {
+                                                                    backgroundColor: '#134357',
+                                                                    color: 'white',
+                                                                    maxHeight: 450,
+                                                                    overflow: 'auto',
+                                                                },
+                                                            },
+                                                        },
+
+                                                    }
+                                                }}
+                                                sx={{
+                                                    '& .MuiSelect-icon': {
+                                                        color: '#fff',
+                                                    },
+                                                    '& .MuiSelect-icon:hover': {
+                                                        color: '#fff',
+                                                    },
+                                                }}>
+                                                <MenuItem value="" sx={{ color: "#4BF807" }}>
+                                                    vehicleCondition
+                                                </MenuItem>
+                                                {getVehicleConditionOptions()}
+                                            </TextField>
+                                        )}
+                                    />
+                                </FormControl>
+                            </Card>
+                        </Grid>
                     </Grid>
                     <br />
                     {/*Submitting button */}
                     <Stack direction='row' gap={3} sx={{ marginBottom: '75px', justifyContent: 'flex-start' }}>
-                        <Link href="/user/profile">
+                        <Link href="/driver/profile">
                             <Button variant="contained" color='success' aria-label="Go back to user profile"> Back </Button>
                         </Link>
                         <Button variant="contained" color='info' onClick={() => reset()} aria-label="Clear form"> Clear </Button>

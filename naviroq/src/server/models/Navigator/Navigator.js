@@ -41,10 +41,10 @@ const NavigatorSchema = new Schema({
     nextOfKin: { type: String, default: null },
     nextOfKinRelationship: { type: String, default: null },
     nextOfKinPhone: { type: String, default: null },
-    dob: {type: String, default: Date, default: null},
+    dob: { type: String, default: Date, default: null },
     gender: { type: String, enum: ['Male', 'Female'], default: null },
-    avatarConfirmation: {type: String, enum: ['Pending', 'Requested', 'Accepted', 'Rejected'], default: 'Accepted'},
-    ctrlFlag: {type: Boolean, default: false},
+    avatarConfirmation: { type: String, enum: ['Pending', 'Requested', 'Accepted', 'Rejected'], default: 'Accepted' },
+    ctrlFlag: { type: Boolean, default: false },
     resetPwd: Boolean,
     resetTTL: Date,
     resetOTP: String,
@@ -104,13 +104,100 @@ const DriverSchema = new Schema({
             timestamp: { type: Date, default: Date.now },
         }
     ],
-    vehicleType: { type: String, required: false },
-    licenseNumber: { type: String, required: false },
+    vehicleType: {
+        type: String,
+        enum: ["Bus", "Keke-Napep", "Car", "Others"],
+        required: false
+    },
+
+    vehiclePlateNumber: { type: String, required: false },
+    driverLicenseNumber: { type: String, required: false },
+    vehicleModel: { type: String, required: false },
+    vehicleColor: {
+        type: String,
+        enum: ["Black", "White", "Red", "Blue", "Green", "Yellow", "Silver", "Grey", "Others"],
+        required: false
+    },
+    customVehicleColor: {
+        type: String,
+        required: function () {
+            return this.vehicleColor === "Others";
+        },
+        validate: {
+            validator: function (value) {
+                // Ensure custom color is provided if 'Others' is selected
+                return this.vehicleColor === "Others" ? value && value.trim() !== "" : true;
+            },
+            message: "Custom vehicle color is required when 'Others' is selected.",
+        },
+    },
+    vehicleYear: { type: String, required: false },
+    vehicleCondition: { type: String, enum: ['New', 'Good', 'Fair', 'Needs Maintenance'], default: 'Good' },
+    vehicleImage: [
+        {
+            type: String,
+            required: false,
+            validate: {
+                validator: function (value) {
+                    // You can add a URL pattern validation here if necessary
+                    return value.match(/(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i);
+                },
+                message: "Each vehicle image must be a valid URL pointing to an image file.",
+            },
+        },
+    ],
+
+    // Insurance details
+    insuranceNumber: { type: String, required: false },
+    insuranceExpiryDate: { type: Date, required: false },
+
     availabilityStatus: {
         type: String,
         enum: ['Online', 'Busy', 'Offline'],
         default: 'Offline',
     },
+
+    currentLocation: {
+        latitude: { type: Number, default: null },
+        longitude: { type: Number, default: null },
+    },
+    lastActive: { type: Date, default: Date.now },
+    workingHours: {
+        start: { type: String, default: "09:00" },
+        end: { type: String, default: "18:00" },
+    },
+
+    // Profile verification and driver reviews
+    profileVerificationStatus: { type: String, enum: ['Pending', 'Verified', 'Rejected'], default: 'Pending' },
+    documents: [
+        {
+            name: { type: String, required: true },
+            url: { type: String, required: true },
+            verified: { type: Boolean, default: false },
+        },
+    ],
+
+    ratings: { type: Number, min: 0, max: 5, default: 0 },
+
+    reviews: [
+        {
+            text: { type: String, required: true },
+            rating: { type: Number, min: 1, max: 5, required: true },
+            date: { type: Date, default: Date.now },
+        }
+    ],
+
+    // Payment and ride completion details
+    ridesCompleted: { type: Number, default: 0 },
+
+    bankAccount: {
+        accName: { type: String, required: false },
+        bankName: { type: String, required: false },
+        accountNumber: { type: String, required: false },
+    },
+
+    paymentStatus: { type: String, enum: ['Pending', 'Paid', 'Hold'], default: 'Pending' },
+
 });
 
 // Model Initialization

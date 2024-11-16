@@ -2,7 +2,8 @@ import AuthController from "./AuthController";
 import dbClient from "@/server/database/mongoDB";
 import getNavigatorModels from "@/server/models/Navigator/Navigator";
 import { loginValidator, signUpValidator } from "@/validators/validateAuth";
-import {setLoctionValidator} from "@/validators/locationValidator"
+import { setLoctionValidator } from "@/validators/locationValidator"
+import {driverBioDataValidator} from "@/validators/serverBioDataValidator";
 import mongoose from "mongoose";
 const { Driver } = await getNavigatorModels(); // Load the Driver model
 
@@ -310,23 +311,24 @@ class DriverController {
                 throw new Error("User not found");
             }
 
-            console.log({
-                "data": obj,
-                driverProfile,
-            })
-
             // cross check with schema validator
-            const { success, data } = beBioDataValidator.safeParse(obj);
+            const { success, data } = driverBioDataValidator.safeParse(obj);
             if (!success) {
                 throw new Error("Bio data validation failed");
             }
 
-            // Loop through the validated object and update respective fields
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    driverProfile[key] = data[key];
+             // Use Object.assign() to merge new fields without removing missing fields in the object
+            Object.assign(driverProfile, data);
+            
+
+             // Check for and add any missing fields from the schema
+             Driver.schema.eachPath((path) => {
+                if (!driverProfile[path] && Driver.schema.paths[path].defaultValue !== undefined) {
+                    // Set to default value if not present and has a default
+                    driverProfile[path] = Driver.schema.paths[path].defaultValue;
                 }
-            }
+            });
+
             // Save the updated profile
             await driverProfile.save();
 
@@ -345,7 +347,7 @@ class DriverController {
         try {
             // Fetch the driver profile from the database
             await dbClient.connect();
-            const driverProfile = await Driver.findById(new ObjectId(driverId));
+            const driverProfile = await Driver.findById(mongoose.Types.ObjectId.createFromHexString(driverId));
 
             if (!driverProfile) {
                 throw new Error("Driver not found");

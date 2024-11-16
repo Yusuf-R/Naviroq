@@ -198,7 +198,7 @@ class AdminUtils {
         }
     }
 
-    static async updateBiodata(obj) {
+    static async updateClientBiodata(obj) {
         try {
             const response = await axiosPrivate({
                 method: "PATCH",
@@ -407,6 +407,24 @@ class AdminUtils {
         }
     }
 
+    static async updateDriverBiodata(obj) {
+        try {
+            const response = await axiosPrivate({
+                method: "PATCH",
+                url: '/driver/profile/update',
+                data: obj,
+            });
+            if (response.status === 201) {
+                return response.data;
+            } else {
+                throw new Error(response.error);
+            }
+        } catch (error) {
+            console.log({ error });
+            throw new Error(error);
+        }
+    }
+
     static async driverAvatar(formData) {
         try {
             const response = await axiosPrivate({
@@ -434,6 +452,9 @@ class AdminUtils {
             throw error;
         }
     }
+
+    
+
 
     static async setDriverLocation(obj) {
         try {

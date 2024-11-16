@@ -146,7 +146,7 @@ function TopNav({ onToggleSideNav, driverProfile }) {
             {/* Right Section: Profile and Dropdown */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Avatar
-                    src={driverProfile.avatar || "/av-1.svg"}
+                    src={driverProfile.avatar || "/av-3.svg"}
                     alt="User Avatar"
                     sx={{ width: 50, height: 50 }}
                 />

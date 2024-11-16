@@ -29,6 +29,8 @@
         "firebase-admin": "^12.6.0",
         "formidable": "^3.5.2",
         "framer-motion": "^11.11.7",
+        "geofire-common": "^6.0.0",
+        "geofirestore": "^5.2.0",
         "jose": "^5.9.4",
         "jsonwebtoken": "^9.0.2",
         "leaflet": "^1.9.4",

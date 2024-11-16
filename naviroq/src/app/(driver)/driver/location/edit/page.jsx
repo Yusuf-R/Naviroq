@@ -4,7 +4,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation"; // Ensure router is imported
 import AdminUtils from "@/utils/AdminUtils";
-import useClientStore from "@/store/useClientStore";
+import useDriverStore from "@/store/useDriverStore";
 import LazyLoading from "@/components/LazyLoading/LazyLoading";
 import useLocationStore from '@/store/useLocationStore';
 
@@ -12,7 +12,7 @@ const EditLocation = lazy(() => import("@/components/Driver/ProfileComponents/Lo
 
 function EditSavedLocation() {
     const [decryptedProfile, setDecryptedProfile] = useState(null);
-    const { encryptedDriverData, setEncryptedDriverData } = useClientStore();
+    const { encryptedDriverData, setEncryptedDriverData } = useDriverStore();
     const { locationData } = useLocationStore();
     const queryClient = useQueryClient();
     const router = useRouter();

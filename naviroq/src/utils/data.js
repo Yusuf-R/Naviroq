@@ -173,6 +173,33 @@ export const sex = [
     'Male',
 ];
 
+
+export const vType = [
+    'Car',
+    'Keke-Napep',
+    'Bus',
+    'Others',
+];
+
+export const vColor = [
+    'Black',
+    'White',
+    'Red',
+    'Blue',
+    'Green',
+    'Yellow',
+    'Silver',
+    'Grey',
+    'Others',
+];
+
+export const vCondition = [
+    'New',
+    'Good',
+    'Fair',
+    'Needs Maintenance',
+];
+
 export const nextOfKinRelationship = [
     'Father',
     'Mother',
@@ -192,6 +219,7 @@ export const nextOfKinRelationship = [
     'Grandmother',
     'Others',
 ];
+
 
 export const txProps = {
     color: "white",
