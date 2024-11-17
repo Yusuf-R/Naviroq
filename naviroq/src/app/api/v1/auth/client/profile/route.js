@@ -16,8 +16,12 @@ export async function GET(request) {
         if (clientProfile instanceof Error) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
-        // Return the user profile
-        return NextResponse.json(clientProfile, { status: 200 });
+        return NextResponse.json(
+            clientProfile,
+            {
+                status: 200
+            }
+        );
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

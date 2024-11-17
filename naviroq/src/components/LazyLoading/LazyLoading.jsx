@@ -8,14 +8,14 @@ import { useTheme, keyframes } from "@mui/material/styles";
 
 function LazyLoading() {
     const theme = useTheme();
- // Breakpoints as defined before
- const xSmall = useMediaQuery(theme.breakpoints.down("xs"));
- const small = useMediaQuery(theme.breakpoints.down("sm"));
- const medium = useMediaQuery(theme.breakpoints.down("md"));
- const large = useMediaQuery(theme.breakpoints.down("lg"));
- const xLarge = useMediaQuery(theme.breakpoints.down("xl"));
- const xxLarge = useMediaQuery(theme.breakpoints.down("xxl"));
- const ultraWide = useMediaQuery(theme.breakpoints.down("xxxxl"));
+    // Breakpoints as defined before
+    const xSmall = useMediaQuery(theme.breakpoints.down("xs"));
+    const small = useMediaQuery(theme.breakpoints.down("sm"));
+    const medium = useMediaQuery(theme.breakpoints.down("md"));
+    const large = useMediaQuery(theme.breakpoints.down("lg"));
+    const xLarge = useMediaQuery(theme.breakpoints.down("xl"));
+    const xxLarge = useMediaQuery(theme.breakpoints.down("xxl"));
+    const ultraWide = useMediaQuery(theme.breakpoints.down("xxxxl"));
 
     // Dynamically adjust loader size and font size based on screen size
     const loaderSize = xSmall || small ? 35 : medium || large ? 45 : 55;
@@ -37,20 +37,20 @@ function LazyLoading() {
 
                 }}
             >
-               <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} alignItems="center">
                     <Typography variant='h5'
-                                sx={{
-                                    fontWeight: 'bold',
-                                    color: '#FFF',
-                                    fontSize: fontSize,  // Responsive font size
-                                }}>
-                        Loading
+                        sx={{
+                            fontWeight: 'bold',
+                            color: '#FFF',
+                            fontSize: fontSize,  // Responsive font size
+                        }}>
+                        Loading...
                     </Typography>
-                    <HashLoader color="#07ebf1" size={loaderSize}/> {/* Responsive loader size */}
+                    <HashLoader color="#07ebf1" size={loaderSize} /> {/* Responsive loader size */}
                 </Stack>
             </Box>
         </>
-   )
+    )
 }
 
 export default LazyLoading

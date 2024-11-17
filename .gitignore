@@ -186,3 +186,5 @@ server/src/devGround/*
 client/jwt-signing-private.pem
 client/jwt-encryption-private.pem
 client/src/lib/playground
+naviroq/src/server/playground
+naviroq/src/server/playground/playground.mjs
