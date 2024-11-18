@@ -1,4 +1,5 @@
 // Page Not found
+'use client';
 
 function E404() {
     return (

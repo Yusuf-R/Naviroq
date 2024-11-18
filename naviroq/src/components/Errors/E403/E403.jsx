@@ -1,4 +1,5 @@
 // Forbidden to access such resources
+'use client';
 
 function E403() {
     return (
