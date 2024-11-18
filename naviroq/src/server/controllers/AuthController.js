@@ -44,7 +44,7 @@ class AuthController {
         });
     }
 
-    // Load private key from environment (ensure it's PEM formatted)
+    // Load private key from environment (ensure open ssl 64 rand)
     static async decryptData(encryptedData, nonce, privateKeyBase64, publicKeyBase64) {
         const privateKey = util.decodeBase64(privateKeyBase64);
         const publicKey = util.decodeBase64(publicKeyBase64);
@@ -80,15 +80,15 @@ class AuthController {
 
     // Headless check
     static async headlessCheck(request) {
+        const authHeader = request.headers.get("Authorization");
+        if (!authHeader) {
+            return new Error("No Authorization header found");
+        }
+        const encryptedId = authHeader.split(" ")[1]
+        if (!encryptedId) {
+            return new Error("Invalid Authorization header");
+        }
         try {
-            const authHeader = request.headers.get("Authorization");
-            if (!authHeader) {
-                throw new Error("No Authorization header found");
-            }
-            const encryptedId = authHeader.split(" ")[1]
-            if (!encryptedId) {
-                throw new Error("Invalid Authorization header");
-            }
             const userId = await AuthController.decryptUserId(encryptedId);
             if (!userId) {
                 throw new Error("Invalid user ID");
