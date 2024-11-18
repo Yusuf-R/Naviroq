@@ -1,4 +1,4 @@
-const { default: E404 } = require("@/components/Errors/E404/E404");
+import E404 from "@/components/Errors/E404/E404";
 
 
 function NotFound() {
