@@ -1,4 +1,4 @@
-const { default: E403 } = require("@/components/Errors/E403/E403");
+import E403 from "@/components/Errors/E403/E403";
 
 function Forbidden() {
     return (

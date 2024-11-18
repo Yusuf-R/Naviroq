@@ -1,4 +1,5 @@
 // Payment Error
+'use client';
 
 
 function E409() {
@@ -10,3 +11,5 @@ function E409() {
         </div>
     )
 }
+
+export default E409

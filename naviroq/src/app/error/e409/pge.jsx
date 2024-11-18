@@ -5,8 +5,6 @@ function PaymentError() {
         <>
             <E409 />
         </>
-  
-    
     )
 }
 

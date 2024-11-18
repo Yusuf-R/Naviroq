@@ -1,4 +1,5 @@
 // Unauthorizatoin error page
+'use client';
 
 function E401 () {
     return (

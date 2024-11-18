@@ -1,4 +1,4 @@
-const { default: E401 } = require("@/components/Errors/E401/E401");
+import  E401 from "@/components/Errors/E401/E401";
 
 function UnAuthorization() {
     return (
@@ -7,3 +7,5 @@ function UnAuthorization() {
         </>
   );
 }
+
+export default UnAuthorization;
