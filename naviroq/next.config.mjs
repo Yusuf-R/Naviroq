@@ -7,8 +7,6 @@ const nextConfig = {
       permanent: true,
     },];
   },
-
-
   experimental: {
     forceSwcTransforms: true,
   },

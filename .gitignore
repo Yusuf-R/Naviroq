@@ -188,3 +188,4 @@ client/jwt-encryption-private.pem
 client/src/lib/playground
 naviroq/src/server/playground
 naviroq/src/server/playground/playground.mjs
+.vercel
