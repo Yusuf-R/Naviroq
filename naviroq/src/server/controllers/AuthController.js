@@ -4,6 +4,8 @@ const ivLength = 12;
 const nacl = require("tweetnacl");
 const util = require("tweetnacl-util");
 
+export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
+
 class AuthController {
 
 

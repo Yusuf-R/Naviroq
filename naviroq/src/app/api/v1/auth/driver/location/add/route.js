@@ -5,7 +5,6 @@ import AuthController from '@/server/controllers/AuthController';
 import DriverController from '@/server/controllers/DriverController';
 
 export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
-
 export async function PATCH(request) {
     try {
         const userId = await AuthController.headlessCheck(request);
