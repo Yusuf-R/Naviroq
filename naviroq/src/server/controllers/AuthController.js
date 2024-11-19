@@ -82,12 +82,14 @@ class AuthController {
     static async headlessCheck(request) {
         try {
             const authHeader = request.headers.get("Authorization");
-            if (!authHeader) {
-                throw new Error("No Authorization header found");
+            if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                console.error("Missing or invalid Authorization header");
+                throw new Error("Unauthorized");
             }
             const encryptedId = authHeader.split(" ")[1]
             if (!encryptedId) {
-                throw new Error("Invalid Authorization header");
+                console.error("No token found in Authorization header");
+                throw new Error("Unauthorized");
             }
             const userId = await AuthController.decryptUserId(encryptedId);
             if (!userId) {
