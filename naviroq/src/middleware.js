@@ -3,6 +3,11 @@ import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
+    console.log({
+        secret: process.env.AUTH_SECRET,
+        signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Custom signing key
+        encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Custom encryption key
+    })
     const token = await getToken({
         req,
         secret: process.env.AUTH_SECRET,
