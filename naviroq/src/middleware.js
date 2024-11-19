@@ -3,13 +3,6 @@ import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
-
-    const tq = req.cookies['next-auth.session-token'] || req.cookies['__Secure-next-auth.session-token'];
-    console.log({
-        req,
-        tq
-    })
-
     // Fetch the token using getToken
     const token = await getToken({
         req,
@@ -19,8 +12,11 @@ export async function middleware(req) {
     console.log('Middleware Token:', token);
     // Redirect to login if no token is found
     if (!token) {
-        console.log('No token found');
-        return NextResponse.redirect(new URL('/', req.url));
+        console.log('Failed to retrieve token.');
+        console.log('Request Cookies:', req.cookies);
+        console.log('Request Headers:', req.headers);
+        return NextResponse.redirect(new URL('/user/signin', req.url));
+
     }
 
     const userRole = token.role;
@@ -35,12 +31,14 @@ export async function middleware(req) {
 
     if (pathname.startsWith('/user') && userRole !== 'Client') {
         console.log('User not allowed');
-        return NextResponse.redirect(new URL('/', req.url));
+        return NextResponse.redirect(new URL('/auth/user', req.url));
+
     }
 
     if (pathname.startsWith('/driver') && userRole !== 'Driver') {
         console.log('Driver not allowed');
-        return NextResponse.redirect(new URL('/', req.url));
+        return NextResponse.redirect(new URL('/auth/driver', req.url));
+
     }
 
     return NextResponse.next();
