@@ -14,8 +14,6 @@ const options = {
     providers: [
         Google,
         Github,
-        Apple,
-        Facebook,
         Credentials({
             credentials: {
                 email: {},
