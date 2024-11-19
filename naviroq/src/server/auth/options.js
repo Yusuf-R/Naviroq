@@ -52,8 +52,6 @@ const options = {
     },
     jwt: {
         encryption: true, // Enable JWE encryption for JWT
-        signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Use non-public signing key
-        encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Use non-public encryption key
     },
     callbacks: {
         async jwt({ token, user }) {
@@ -65,12 +63,28 @@ const options = {
             return token;
         },
         async session({ session, token }) {
-            // Attach minimal data to the session object for frontend access
-            session.user.id = token.id;
-            session.user.role = token.role;
+            if (token) {
+                session.user.id = token.id;
+                session.user.role = token.role;
+                session.user.email = token.email;
+            }
             return session;
         }
-    }
+    },
+    cookies: {
+        sessionToken: {
+            name: process.env.NODE_ENV === 'production'
+                ? '__Secure-next-auth.session-token'
+                : 'next-auth.session-token',
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production'
+            }
+        }
+    },
+    debug: process.env.NODE_ENV === 'development',
 };
 
 export default options;
