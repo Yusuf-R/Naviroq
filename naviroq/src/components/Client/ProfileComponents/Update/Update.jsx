@@ -215,7 +215,7 @@ function UpdateProfile({ clientProfile }) {
     const updateData = async (objData) => {
         try {
             setUpdating(true);
-            const { success, data } = setBioDataValidator.safeParse(objData);
+            const { success, data } = clientBioDataValidator.safeParse(objData);
             if (!success) {
                 setUpdating(false);
                 toast.error('Please fill all the required fields');
