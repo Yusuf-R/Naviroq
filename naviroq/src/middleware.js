@@ -15,7 +15,7 @@ export async function middleware(req) {
         console.log('Failed to retrieve token.');
         console.log('Request Cookies:', req.cookies);
         console.log('Request Headers:', req.headers);
-        return NextResponse.redirect(new URL('/user/signin', req.url));
+        return NextResponse.redirect(new URL('/auth/user', req.url));
 
     }
 
