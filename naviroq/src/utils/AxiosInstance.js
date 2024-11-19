@@ -24,8 +24,8 @@ axiosPrivate.interceptors.request.use(
     async(config) => {
         try {
             const session = await getSession();
-            if (!session) throw new Error("No active session.");
             console.log({ session });
+            if (!session) throw new Error("No active session.");
             const encryptedId = await AdminUtils.encryptUserId(session.user.id);
             console.log({ encryptedId });
             config.headers.Authorization = `Bearer ${encryptedId}`;

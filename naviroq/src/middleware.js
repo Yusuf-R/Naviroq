@@ -1,8 +1,11 @@
 // src/middleware.js
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
+import { getSession } from "next-auth/react";
 
 export async function middleware(req) {
+    const session = await getSession();
+    console.log({ session });
     const token = await getToken({
         req,
         secret: process.env.AUTH_SECRET,
