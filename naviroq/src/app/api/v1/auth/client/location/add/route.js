@@ -7,7 +7,6 @@ import ClientController from '@/server/controllers/ClientController';
 
 export async function PATCH(request) {
     try {
-        await dbClient.connect();
         const userId = await AuthController.headlessCheck(request);
         if (userId instanceof Error) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -20,7 +19,6 @@ export async function PATCH(request) {
         if (clientProfile instanceof Error) {
             return NextResponse.json({ message: "Failed to update location" }, { status: 400 });
         }
-        await dbClient.close();
         return NextResponse.json(clientProfile, { status: 201 });
     } catch (error) {
         console.error(error);
