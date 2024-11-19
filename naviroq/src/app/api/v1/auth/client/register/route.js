@@ -1,8 +1,9 @@
-'use server';
+
 import { NextResponse } from 'next/server';
 import dbClient from '@/server/database/mongoDB';
 import ClientController from '@/server/controllers/ClientController';
 
+export const dynamic = 'force-dynamic'; // Ensure all routes in /client are dynamic
 
 export async function POST(request) {
     const obj = await request.json(); // Parse the request body

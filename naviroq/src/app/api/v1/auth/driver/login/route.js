@@ -1,4 +1,4 @@
-'use server';
+
 import { NextResponse } from 'next/server';
 import DriverController from '@/server/controllers/DriverController';
 

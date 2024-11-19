@@ -1,10 +1,10 @@
 // loguut
-'use server'
+
 import { NextResponse } from 'next/server'
 import AuthController from '@/server/controllers/AuthController'
 import ClientController from '@/server/controllers/ClientController';
 
-
+export const dynamic = 'force-dynamic'; // Ensure all routes in /client are dynamic
 
 export async function POST(req) {
     try {

@@ -1,4 +1,4 @@
-'use server';
+
 // src/app/api/client/profile/route.js
 import { NextResponse } from "next/server";
 import AuthController from "@/server/controllers/AuthController";
