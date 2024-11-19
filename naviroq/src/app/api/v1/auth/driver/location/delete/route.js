@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import AuthController from '@/server/controllers/AuthController';
 import DriverController from '@/server/controllers/DriverController';
 
+
 export async function DELETE(request) {
     try {
         const userId = await AuthController.headlessCheck(request);

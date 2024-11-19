@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server'
 import AuthController from '@/server/controllers/AuthController'
 import ClientController from '@/server/controllers/ClientController';
 
+
+
 export async function POST(req) {
     try {
         const userId = await AuthController.headlessCheck(req)
