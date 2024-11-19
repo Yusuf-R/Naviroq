@@ -79,8 +79,6 @@ const options = {
                 sameSite: 'lax',
                 path: '/',
                 secure: process.env.NODE_ENV === 'production',
-                domain: process.env.NODE_ENV === 'production' ? 'https://naviroq.vercel.app' : undefined,
-
             }
         }
     },
