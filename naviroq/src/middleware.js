@@ -1,49 +1,48 @@
 // src/middleware.js
-import { getToken } from 'next-auth/jwt';
+import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 
-export async function middleware(req) {
-    console.log({
-        secret: process.env.AUTH_SECRET,
-        signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Custom signing key
-        encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Custom encryption key
-    })
-    const token = await getToken({
-        req,
-        secret: process.env.AUTH_SECRET,
-        signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Custom signing key
-        encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Custom encryption key
-    });
-    console.log({ req });
-    console.log('Token:', token);
-
-    // Redirect to login if no token is found
+// Create a custom middleware that wraps the built-in withAuth middleware
+export default withAuth(
+  async function middleware(req) {
+    const token = req.nextauth.token;
+    
+    // If no token, redirect to login
     if (!token) {
-        console.log('No token found');
-        return NextResponse.redirect(new URL('/', req.url));
+      const loginUrl = new URL('/auth/signin', req.url);
+      loginUrl.searchParams.set('callbackUrl', req.url);
+      return NextResponse.redirect(loginUrl);
     }
 
     const userRole = token.role;
     const { pathname } = req.nextUrl;
-    console.log(`Pathname: ${pathname}, Role: ${userRole}`);
 
+    // Role-based access control
     if (userRole === 'Admin') {
-        return NextResponse.next();
+      return NextResponse.next();
     }
 
     if (pathname.startsWith('/user') && userRole !== 'Client') {
-        console.log('User not allowed');
-        return NextResponse.redirect(new URL('/', req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
 
     if (pathname.startsWith('/driver') && userRole !== 'Driver') {
-        console.log('Driver not allowed');
-        return NextResponse.redirect(new URL('/', req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
 
     return NextResponse.next();
-}
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token
+    },
+    secret: process.env.AUTH_SECRET,
+    pages: {
+      signIn: '/auth/signin',
+    }
+  }
+);
 
 export const config = {
-    matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*'],
+  matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*']
 };
