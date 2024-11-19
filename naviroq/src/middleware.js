@@ -1,6 +1,7 @@
 // src/middleware.js
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
+import { auth as middleware } from "@/server/auth/options";
 
 export async function middleware(req) {
     const token = await getToken({
@@ -9,6 +10,7 @@ export async function middleware(req) {
         signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Custom signing key
         encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Custom encryption key
     });
+    console.log({ req });
     console.log('Token:', token);
 
     // Redirect to login if no token is found
