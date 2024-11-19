@@ -1,4 +1,4 @@
-'use server';
+
 import { NextResponse } from 'next/server';
 import dbClient from '@/server/database/mongoDB';
 import ClientController from '@/server/controllers/ClientController';
