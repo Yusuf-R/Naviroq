@@ -10,12 +10,10 @@ export async function middleware(req) {
     });
 
     console.log('Middleware Token:', token);
-
     // Redirect to login if no token is found
     if (!token) {
-        const loginUrl = new URL('/auth/signin', req.url);
-        loginUrl.searchParams.set('callbackUrl', req.url); // Redirect back to the original URL post-login
-        return NextResponse.redirect(loginUrl);
+        console.log('No token found');
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
     const userRole = token.role;
