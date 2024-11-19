@@ -9,6 +9,7 @@ export async function middleware(req) {
         signingKey: process.env.JWT_SIGNING_PRIVATE_KEY, // Custom signing key
         encryptionKey: process.env.JWT_ENCRYPTION_PRIVATE_KEY, // Custom encryption key
     });
+    console.log({ req });
     console.log('Token:', token);
 
     // Redirect to login if no token is found
