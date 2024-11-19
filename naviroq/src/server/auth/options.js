@@ -67,7 +67,7 @@ const options = {
                 session.user.email = token.email;
             }
             return session;
-        }
+        },
     },
     cookies: {
         sessionToken: {
@@ -78,11 +78,13 @@ const options = {
                 httpOnly: true,
                 sameSite: 'lax',
                 path: '/',
-                secure: process.env.NODE_ENV === 'production'
+                secure: process.env.NODE_ENV === 'production',
+                domain: process.env.NODE_ENV === 'production' ? 'https://naviroq.vercel.app' : undefined,
+
             }
         }
     },
-    debug: process.env.NODE_ENV === 'development',
+    debug: true,
 };
 
 export default options;
