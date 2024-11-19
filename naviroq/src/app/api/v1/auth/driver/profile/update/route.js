@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import AuthController from '@/server/controllers/AuthController';
 import DriverController from '@/server/controllers/DriverController';
 
-
+export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
 // Backend PATCH endpoint
 export async function PATCH(req) {
     try {

@@ -4,7 +4,7 @@ import AuthController from '@/server/controllers/AuthController';
 import ClientController from '@/server/controllers/ClientController';
 import cloudinary from "@/server/utils/cloudinary/cloudinary";
 
-
+export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
 // Backend PATCH endpoint
 export async function PATCH(req) {
     try {

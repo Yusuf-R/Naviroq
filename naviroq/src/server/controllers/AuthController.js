@@ -80,15 +80,15 @@ class AuthController {
 
     // Headless check
     static async headlessCheck(request) {
-        const authHeader = request.headers.get("Authorization");
-        if (!authHeader) {
-            return new Error("No Authorization header found");
-        }
-        const encryptedId = authHeader.split(" ")[1]
-        if (!encryptedId) {
-            return new Error("Invalid Authorization header");
-        }
         try {
+            const authHeader = request.headers.get("Authorization");
+            if (!authHeader) {
+                throw new Error("No Authorization header found");
+            }
+            const encryptedId = authHeader.split(" ")[1]
+            if (!encryptedId) {
+                throw new Error("Invalid Authorization header");
+            }
             const userId = await AuthController.decryptUserId(encryptedId);
             if (!userId) {
                 throw new Error("Invalid user ID");

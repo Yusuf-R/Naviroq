@@ -5,7 +5,7 @@ import dbClient from '@/server/database/mongoDB';
 import AuthController from '@/server/controllers/AuthController';
 import ClientController from '@/server/controllers/ClientController';
 
-
+export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
 export async function PATCH(request) {
     try {
         await dbClient.connect();
