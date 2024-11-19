@@ -1,48 +1,57 @@
-// src/middleware.js
-import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { getToken } from "next-auth/jwt"
+import { NextResponse } from 'next/server'
 
-// Create a custom middleware that wraps the built-in withAuth middleware
-export default withAuth(
-  async function middleware(req) {
-    const token = req.nextauth.token;
+export async function middleware(req) {
+  console.log('Middleware started')
+  console.log('Request URL:', req.url)
+  console.log('Request Pathname:', req.nextUrl.pathname)
+
+  try {
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET })
     
-    // If no token, redirect to login
-    if (!token) {
-      const loginUrl = new URL('/auth/signin', req.url);
-      loginUrl.searchParams.set('callbackUrl', req.url);
-      return NextResponse.redirect(loginUrl);
-    }
+    console.log('Token retrieved:', !!token)
+    console.log('Token details:', token ? {
+      role: token.role,
+      id: token.id,
+      email: token.email
+    } : 'No token')
 
-    const userRole = token.role;
-    const { pathname } = req.nextUrl;
+    // No token - redirect to login
+    if (!token) {
+      console.warn('No token found, redirecting to login')
+      const loginUrl = new URL('/auth/signin', req.url)
+      loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname)
+      return NextResponse.redirect(loginUrl)
+    }
 
     // Role-based access control
-    if (userRole === 'Admin') {
-      return NextResponse.next();
+    const userRole = token.role
+    console.log('User Role:', userRole)
+
+    const roleRoutes = {
+      'Admin': ['/admin', '/user', '/driver'],
+      'Client': ['/user'],
+      'Driver': ['/driver']
     }
 
-    if (pathname.startsWith('/user') && userRole !== 'Client') {
-      return NextResponse.redirect(new URL('/', req.url));
+    const allowedRoutes = roleRoutes[userRole] || []
+    const isAuthorized = allowedRoutes.some(route => req.nextUrl.pathname.startsWith(route))
+
+    console.log('Authorized Routes for role:', allowedRoutes)
+    console.log('Is Route Authorized:', isAuthorized)
+
+    if (!isAuthorized) {
+      console.warn(`Unauthorized access attempt: ${userRole} tried to access ${req.nextUrl.pathname}`)
+      return NextResponse.redirect(new URL('/', req.url))
     }
 
-    if (pathname.startsWith('/driver') && userRole !== 'Driver') {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token
-    },
-    secret: process.env.AUTH_SECRET,
-    pages: {
-      signIn: '/auth/signin',
-    }
+    return NextResponse.next()
+  } catch (error) {
+    console.error('Middleware Error:', error)
+    return NextResponse.redirect(new URL('/', req.url))
   }
-);
+}
 
 export const config = {
   matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*']
-};
+}

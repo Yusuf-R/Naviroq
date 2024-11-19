@@ -5,8 +5,6 @@ import getNavigatorModels from "@/server/models/Navigator/Navigator"; // User mo
 
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
-import Apple from "next-auth/providers/apple";
-import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 
 const options = {
