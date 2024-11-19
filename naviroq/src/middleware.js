@@ -3,6 +3,13 @@ import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
+
+    const tq = req.cookies['next-auth.session-token'] || req.cookies['__Secure-next-auth.session-token'];
+    console.log({
+        req,
+        tq
+    })
+
     // Fetch the token using getToken
     const token = await getToken({
         req,
