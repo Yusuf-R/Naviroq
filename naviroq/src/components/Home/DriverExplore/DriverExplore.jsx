@@ -107,11 +107,12 @@ function DriverExplore() {
         console.log('Data successfully validated');
         const encryptedData = await AdminUtils.encryptCredentials(data);
         mutationRegister.mutate({ encryptedData }, {
-            onSuccess: async () => {
+            onSuccess: async (respData) => {
                 toast.success("Registration successful 🚀");
                 const signInResponse = await signIn('credentials', {
                     redirect: false,
                     email: data.email,
+                    role: respData.role,
                     password: data.password,
                 });
 
@@ -149,13 +150,14 @@ function DriverExplore() {
         console.log('Data successfully validated');
         const encryptedData = await AdminUtils.encryptCredentials(data);
         mutationLogin.mutate({ encryptedData }, {
-            onSuccess: async () => {
+            onSuccess: async (respData) => {
                 toast.success("Login successful 🚀");
 
                 // Log in the user immediately after successful registration
                 const loginResult = await signIn("credentials", {
                     email: data.email,
                     password: data.password,
+                    role: respData.role,
                     redirect: false,
                 });
 

@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { setLoctionValidator } from "@/validators/locationValidator";
+import { setLocationValidator } from "@/validators/locationValidator";
 import AdminUtils from "@/utils/AdminUtils";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -105,7 +105,7 @@ function SetLocation({ clientProfile }) {
             return;
         }
 
-        const { success, data } = setLoctionValidator.safeParse(newLocation);
+        const { success, data } = setLocationValidator.safeParse(newLocation);
         if (!success) {
             toast.error("Please fill in all required fields.");
             setIsLoading(false);
