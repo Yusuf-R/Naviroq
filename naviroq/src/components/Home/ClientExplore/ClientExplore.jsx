@@ -97,7 +97,7 @@ function ClientExplore() {
                 if (signInResponse.ok) {
                     toast.success("Redirecting to dashboard 📡");
                     setToLogin(false);
-                    router.push('/user/dashboard');
+                    router.push('/client/dashboard');
                 } else {
                     toast.error("Automatic login failed. Please login manually. 💺");
                     setToLogin(false);
@@ -105,7 +105,7 @@ function ClientExplore() {
                 }
                 toast.success("Redirecting to dashboard 🖥 ")
                 setToLogin(false);
-                router.push('/user/dashboard');
+                router.push('/client/dashboard');
             },
             onError: (error) => {
                 console.error(error);
@@ -132,7 +132,7 @@ function ClientExplore() {
                 console.log({ respData });
                 toast.success("Login successful 🚀");
 
-                // Log in the user immediately after successful registration
+                // Log in the client immediately after successful registration
                 const loginResult = await signIn("credentials", {
                     email: data.email,
                     password: data.password,
@@ -143,7 +143,7 @@ function ClientExplore() {
                 if (loginResult.ok) {
                     toast.success("Redirecting to dashboard 💡");
                     setToLogin(false);
-                    router.push('/user/dashboard'); // Redirect to dashboard
+                    router.push('/client/dashboard'); // Redirect to dashboard
                 } else {
                     toast.error("Login failed after registration");
                     setToLogin(false);
