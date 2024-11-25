@@ -55,7 +55,7 @@ export async function middleware(req) {
         // Define role-based access logic for frontend paths
         const rolePaths = {
             Admin: '/admin',
-            User: '/user',
+            Client: '/client',
             Driver: '/driver',
         };
 
@@ -79,5 +79,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*', '/api/v1/:path*'], // Define routes to match
+    matcher: ['/client/:path*', '/driver/:path*', '/admin/:path*', '/api/v1/:path*'], // Define routes to match
 };
