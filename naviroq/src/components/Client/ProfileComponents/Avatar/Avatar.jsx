@@ -34,7 +34,7 @@ function Avatar({ clientProfile }) {
     const [crop, setCrop] = useState({});
     const [uploading, setUploading] = useState(false);
 
-    const [activeTab, setActiveTab] = useState('/user/profile/avatar');
+    const [activeTab, setActiveTab] = useState('/client/profile/avatar');
 
     const pathname = usePathname();
     const router = useRouter();
@@ -170,7 +170,7 @@ function Avatar({ clientProfile }) {
                     queryClient.invalidateQueries(["ClientData"]);
                     router.refresh();
                     toast.success('Image uploaded successfully');
-                    router.push('/user/profile');
+                    router.push('/client/profile');
                     setUploading(false);
                 },
                 onError: (error) => {
@@ -195,9 +195,9 @@ function Avatar({ clientProfile }) {
     useEffect(() => {
         // Update activeTab based on pathname
         if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/client/profile/avatar');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/client/profile');
         }
     }, [pathname]);
 
@@ -244,8 +244,8 @@ function Avatar({ clientProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/client/profile"
+                            value="/client/profile"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -258,8 +258,8 @@ function Avatar({ clientProfile }) {
                         <Tab
                             label="Avatar"
                             component={Link}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/client/profile/avatar"
+                            value="/client/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',

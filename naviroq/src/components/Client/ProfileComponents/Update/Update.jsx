@@ -48,7 +48,7 @@ import AdminUtils from '@/utils/AdminUtils';
 
 function UpdateProfile({ clientProfile }) {
     
-    const [activeTab, setActiveTab] = useState('/user/profile/update');
+    const [activeTab, setActiveTab] = useState('/client/profile/update');
     const pathname = usePathname();
     const router = useRouter();
     const [dobDate, setDobDate] = useState(null);
@@ -150,13 +150,13 @@ function UpdateProfile({ clientProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/client/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/client/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/client/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/client/profile');
         }
     }, [pathname]);
 
@@ -227,7 +227,7 @@ function UpdateProfile({ clientProfile }) {
                     queryClient.invalidateQueries(['ClientData']);
                     setUpdating(false);
                     router.refresh();
-                    router.push('/user/profile');
+                    router.push('/client/profile');
                 },
                 onError: (error) => {
                     console.error('An unexpected error happened:', error);
@@ -282,8 +282,8 @@ function UpdateProfile({ clientProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/client/profile"
+                            value="/client/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -296,8 +296,8 @@ function UpdateProfile({ clientProfile }) {
                         />
                         <Tab
                             label="Edit-Biodata"
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/client/profile/update"
+                            value="/client/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -806,8 +806,8 @@ function UpdateProfile({ clientProfile }) {
                     <br />
                     {/*Submitting button */}
                     <Stack direction='row' gap={3} sx={{ marginBottom: '75px', justifyContent: 'flex-start' }}>
-                        <Link href="/user/profile">
-                            <Button variant="contained" color='success' aria-label="Go back to user profile"> Back </Button>
+                        <Link href="/client/profile">
+                            <Button variant="contained" color='success' aria-label="Go back to client profile"> Back </Button>
                         </Link>
                         <Button variant="contained" color='info' onClick={() => reset()} aria-label="Clear form"> Clear </Button>
                         <Button

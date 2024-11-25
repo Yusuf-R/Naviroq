@@ -37,7 +37,7 @@ function SideNav({ navState, activeRoute }) {
     mutationKey: ['Logout'],
     mutationFn: AdminUtils.clientLogout,
     onSuccess: () => {
-      signOut({ callbackUrl: '/auth/user' }); // Redirects after logout
+      signOut({ callbackUrl: '/auth/client' }); // Redirects after logout
       toast.success('Logged out successfully');
       setLoggingOut(false);
       setConfirmExit(false); // Close dialog
@@ -103,15 +103,15 @@ function SideNav({ navState, activeRoute }) {
       <List>
         <ListItem
           button
-          onClick={() => handleNavigation("/user/dashboard")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/dashboard" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/dashboard")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/dashboard" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>
               <Badge
                 color="success"
                 variant={showText ? "dot" : "standard"}
-                invisible={activeRoute !== "/user/dashboard"}
+                invisible={activeRoute !== "/client/dashboard"}
               >
                 <DashboardIcon />
               </Badge>
@@ -131,8 +131,8 @@ function SideNav({ navState, activeRoute }) {
       <List>
         <ListItem
           button
-          onClick={() => handleNavigation("/user/my-rides")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/my-rides" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/my-rides")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/my-rides" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>
@@ -144,8 +144,8 @@ function SideNav({ navState, activeRoute }) {
 
         <ListItem
           button
-          onClick={() => handleNavigation("/user/location")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/location" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/location")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/location" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>
@@ -157,8 +157,8 @@ function SideNav({ navState, activeRoute }) {
 
         <ListItem
           button
-          onClick={() => handleNavigation("/user/promotions")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/promotions" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/promotions")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/promotions" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>
@@ -179,8 +179,8 @@ function SideNav({ navState, activeRoute }) {
       <List>
         <ListItem
           button
-          onClick={() => handleNavigation("/user/profile")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/profile" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/profile")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/profile" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>
@@ -192,8 +192,8 @@ function SideNav({ navState, activeRoute }) {
 
         <ListItem
           button
-          onClick={() => handleNavigation("/user/settings")}
-          sx={{ ...hoverStyle, ...(activeRoute === "/user/settings" ? activeStyle : {}) }}
+          onClick={() => handleNavigation("/client/settings")}
+          sx={{ ...hoverStyle, ...(activeRoute === "/client/settings" ? activeStyle : {}) }}
         >
           {showIcons && (
             <ListItemIcon sx={{ color: "white" }}>

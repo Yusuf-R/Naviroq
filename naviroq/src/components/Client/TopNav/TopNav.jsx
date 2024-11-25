@@ -50,7 +50,7 @@ function TopNav({ onToggleSideNav, clientProfile }) {
         mutationKey: ['Logout'],
         mutationFn: AdminUtils.clientLogout,
         onSuccess: () => {
-            signOut({ callbackUrl: '/auth/user' }); // Redirects after logout
+            signOut({ callbackUrl: '/auth/client' }); // Redirects after logout
             toast.success('Logged out successfully');
             setConfirmExit(false); // Close dialog
             setLoggingOut(false);
@@ -108,12 +108,12 @@ function TopNav({ onToggleSideNav, clientProfile }) {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Avatar
                     src={clientProfile.avatar || "/av-1.svg"}
-                    alt="User Avatar"
+                    alt="client Avatar"
                     sx={{ width: 50, height: 50 }}
                 />
                 <Box sx={{ textAlign: "left" }}>
                     <Typography variant="body1" sx={{ fontWeight: "bold", color: '#FFF' }}>
-                        {clientProfile.fullName || "User Name"}
+                        {clientProfile.fullName || "client Name"}
                     </Typography>
                     <Typography variant="body2" color="#FFF">
                         Profile

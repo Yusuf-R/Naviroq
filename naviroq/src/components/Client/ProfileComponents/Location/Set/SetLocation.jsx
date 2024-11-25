@@ -262,7 +262,7 @@ function SetLocation({ clientProfile }) {
                                     variant="contained"
                                     color="success"
                                     startIcon={<DashboardIcon />}
-                                    onClick={() => router.push("/user/dashboard")}
+                                    onClick={() => router.push("/client/dashboard")}
                                     fullWidth
                                 >
                                     Dashboard
