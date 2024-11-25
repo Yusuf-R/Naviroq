@@ -61,7 +61,7 @@ function UserDashboard() {
                 // Redirect to Location Setup Page if no locations are found
                 toast.info('Redirecting to location setup page...');
                 toast.info('Please set up your locations to continue.');
-                router.push("/user/get-started");
+                router.push("/client/get-started");
             } else {
                 setDecryptedProfile(profile); // Set decrypted profile to load RideBookingMap
             }

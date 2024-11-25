@@ -55,7 +55,7 @@ export async function middleware(req) {
         // Define role-based access logic for frontend paths
         const rolePaths = {
             Admin: '/admin',
-            User: '/user',
+            Client: '/client',
             Driver: '/driver',
         };
 
