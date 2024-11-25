@@ -10,7 +10,11 @@ export async function POST(request) {
     try {
         await dbClient.connect();
         const newUser = await ClientController.RegisterNew(obj);
-        return NextResponse.json({ message: 'User registered successfully', user: newUser }, { status: 201 });
+        return NextResponse.json({
+            id: newUser._id,
+            role: newUser.role,
+            email: newUser.email
+        }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ message: 'Registration failed', error: error.message }, { status: 400 });
     }

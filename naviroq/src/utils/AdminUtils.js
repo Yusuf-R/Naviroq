@@ -152,7 +152,6 @@ class AdminUtils {
                 url: '/client/login',
                 data: obj,
             });
-            console.log({ response });
             if (response.status === 201) {
                 return response.data;
             } else {

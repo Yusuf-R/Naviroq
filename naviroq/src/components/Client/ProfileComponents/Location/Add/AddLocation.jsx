@@ -5,7 +5,7 @@ import { useMediaQuery } from '@mui/material';
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setLoctionValidator } from "@/validators/locationValidator";
+import { setLocationValidator } from "@/validators/locationValidator";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid2";
@@ -95,7 +95,7 @@ function AddLocation() {
 
     const handleAddLocation = async (formObj) => {
         setIsLoading(true);
-        const { success, data } = setLoctionValidator.safeParse(formObj);
+        const { success, data } = setLocationValidator.safeParse(formObj);
         if (!success) {
             toast.error("Please fill in all required fields.");
             setIsLoading(false);

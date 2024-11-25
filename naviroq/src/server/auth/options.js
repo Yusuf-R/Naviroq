@@ -16,6 +16,7 @@ const options = {
             credentials: {
                 email: {},
                 password: {},
+                role: {},
             },
             authorize: async (credentials) => {
                 try {
@@ -38,7 +39,11 @@ const options = {
                 } catch (error) {
                     console.error("Authorization error:", error.message);
                     return null;
+                } finally {
+                    // Close the MongoDB connection
+                    await dbClient.close();
                 }
+
             }
         }),
     ],
@@ -64,24 +69,9 @@ const options = {
             if (token) {
                 session.user.id = token.id;
                 session.user.role = token.role;
-                session.user.email = token.email;
             }
             return session;
         },
-    },
-    cookies: {
-        sessionToken: {
-            name: process.env.NODE_ENV === 'production'
-                ? '__Secure-next-auth.session-token'
-                : 'next-auth.session-token',
-            options: {
-                domain: process.env.NODE_ENV === 'production' ? '.naviroq.vercel.app' : undefined,
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            }
-        }
     },
     debug: true,
 };

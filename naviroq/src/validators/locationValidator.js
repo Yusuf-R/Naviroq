@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Location schema with preprocessing for category validation
-export const setLoctionValidator = z.object({
+export const setLocationValidator = z.object({
     category: z.preprocess(
         (val) => (val === "" ? undefined : val),
         z.enum(["Home", "School", "Office", "MarketPlace", "Mosque", "Church", "Hospital", "Hotel", "SuperMarket", "Others"])
