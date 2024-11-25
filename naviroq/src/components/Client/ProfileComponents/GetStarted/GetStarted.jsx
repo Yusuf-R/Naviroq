@@ -15,7 +15,7 @@ function GetStarted({clietnProfile}) {
     const isLargeScreen = useMediaQuery('(min-width:900px)');
 
     const handleSetLocation = () => {
-        router.push("/user/location/add");
+        router.push("/client/location/add");
     };
 
     return (

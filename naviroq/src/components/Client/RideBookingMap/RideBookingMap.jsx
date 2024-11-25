@@ -386,7 +386,7 @@ function RideBookingMap({ clientProfile }) {
 
             toast.success("You have confirmed the ride!");
             setShowConfirmationModal(false); // Close the modal
-            router.push("/user/my-rides"); // Redirect to My Rides page
+            router.push("/client/my-rides"); // Redirect to My Rides page
         } catch (error) {
             console.error("Error confirming the ride:", error);
             toast.error("Failed to confirm the ride. Please try again.");

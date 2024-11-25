@@ -37,7 +37,7 @@ const randomColor = () => {
 };
 
 function ViewLocation({ clientProfile }) {
-    const [activeTab, setActiveTab] = useState('/user/location/view');
+    const [activeTab, setActiveTab] = useState('/client/location/view');
     const [loading, setLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter();
@@ -56,13 +56,13 @@ function ViewLocation({ clientProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/client/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/client/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/client/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/client/profile');
         }
     }, [pathname]);
 
@@ -74,16 +74,16 @@ function ViewLocation({ clientProfile }) {
 
 
     const editBiodata = async () => {
-        router.push(`/user/profile/update`);
+        router.push(`/client/profile/update`);
     };
 
     const updateAvatar = async () => {
-        router.push(`/user/profile/avatar`);
+        router.push(`/client/profile/avatar`);
     };
 
     const onEdit = (objId) => {
         useLocationStore.getState().setLocationData(objId);
-        router.push('/user/location/edit');
+        router.push('/client/location/edit');
     };
 
     // Handler for opening confirmation dialog
@@ -123,7 +123,7 @@ function ViewLocation({ clientProfile }) {
 
     const handleAdd = async () => {
         setLoading(true);
-        router.push('/user/location/add');
+        router.push('/client/location/add');
         setLoading(false);
     };
 
@@ -157,8 +157,8 @@ function ViewLocation({ clientProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/client/profile"
+                            value="/client/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -172,8 +172,8 @@ function ViewLocation({ clientProfile }) {
                         <Tab
                             label="Edit-Biodata"
                             onClick={editBiodata}
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/client/profile/update"
+                            value="/client/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -187,8 +187,8 @@ function ViewLocation({ clientProfile }) {
                             label="Avatar"
                             component={Link}
                             onClick={updateAvatar}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/client/profile/avatar"
+                            value="/client/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -201,8 +201,8 @@ function ViewLocation({ clientProfile }) {
                         <Tab
                             label="Location"
                             component={Link}
-                            href="/user/location"
-                            value="/user/location"
+                            href="/client/location"
+                            value="/client/location"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',

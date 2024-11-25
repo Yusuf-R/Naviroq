@@ -39,7 +39,7 @@ const loadGoogleMapsScript = (callback) => {
 const locationCategory = ["Home", "School", "Office", "MarketPlace", "Mosque", "Church", "Hospital", "Hotel", "SuperMarket", "Others"];
 
 function EditLocation({ clientProfile, locationData }) {
-    const [activeTab, setActiveTab] = useState('/user/location/edit');
+    const [activeTab, setActiveTab] = useState('/client/location/edit');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
@@ -102,13 +102,13 @@ function EditLocation({ clientProfile, locationData }) {
 
     useEffect(() => {
         if (pathname.includes('edit')) {
-            setActiveTab('/user/location/edit');
+            setActiveTab('/client/location/edit');
         } else if (pathname.includes('view')) {
-            setActiveTab('/user/location/view');
+            setActiveTab('/client/location/view');
         } else if (pathname.includes('set')) {
-            setActiveTab('/user/location/set');
+            setActiveTab('/client/location/set');
         } else {
-            setActiveTab('/user/location');
+            setActiveTab('/client/location');
         }
     }, [pathname]);
 
@@ -132,7 +132,7 @@ function EditLocation({ clientProfile, locationData }) {
                 toast.success("Location updated successfully");
                 setIsLoading(false);
                 router.refresh();
-                router.push('/user/location/view');
+                router.push('/client/location/view');
             },
             onError: (error) => {
                 toast.error("Failed to update location");
@@ -175,8 +175,8 @@ function EditLocation({ clientProfile, locationData }) {
                     <Tab
                         label="Location"
                         component={Link}
-                        href="/user/location"
-                        value="/user/location"
+                        href="/client/location"
+                        value="/client/location"
 
                         sx={{
                             color: "#FFF",
@@ -189,8 +189,8 @@ function EditLocation({ clientProfile, locationData }) {
                     />
                     <Tab
                         label="View-Location"
-                        href="/user/location/view"
-                        value="/user/location/view"
+                        href="/client/location/view"
+                        value="/client/location/view"
                         sx={{
                             color: "#FFF",
                             fontWeight: 'bold',
@@ -203,8 +203,8 @@ function EditLocation({ clientProfile, locationData }) {
                     <Tab
                         label="Edit-Location"
                         component={Link}
-                        href="/user/location/edit"
-                        value="/user/location/edit"
+                        href="/client/location/edit"
+                        value="/client/location/edit"
                         sx={{
                             color: "#FFF",
                             fontWeight: 'bold',
@@ -217,8 +217,8 @@ function EditLocation({ clientProfile, locationData }) {
                     <Tab
                         label="Set-Location"
                         component={Link}
-                        href="/user/location/set"
-                        value="/user/location/set"
+                        href="/client/location/set"
+                        value="/client/location/set"
                         sx={{
                             color: "#FFF",
                             fontWeight: 'bold',
@@ -348,7 +348,7 @@ function EditLocation({ clientProfile, locationData }) {
                 </Grid>
 <br />
                 <Stack direction='row' gap={2} sx={{ justifyContent: 'flex-start' }}>
-                    <Link href="/user/location/view">
+                    <Link href="/client/location/view">
                         <Button variant="contained" color='error' aria-label="Baack"> Back </Button>
                     </Link>
                     <Button

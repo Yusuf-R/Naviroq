@@ -59,7 +59,7 @@ const getBadgeStyles = (status) => {
 
 
 function Profile({ clientProfile }) {
-    const [activeTab, setActiveTab] = useState('/user/profile');
+    const [activeTab, setActiveTab] = useState('/client/profile');
     const pathname = usePathname();
     const router = useRouter();
     // Break Points
@@ -73,26 +73,26 @@ function Profile({ clientProfile }) {
 
     useEffect(() => {
         if (pathname.includes('update')) {
-            setActiveTab('/user/profile/update');
+            setActiveTab('/client/profile/update');
         } else if (pathname.includes('avatar')) {
-            setActiveTab('/user/profile/avatar');
+            setActiveTab('/client/profile/avatar');
         } else if (pathname.includes('location')) {
-            setActiveTab('/user/location');
+            setActiveTab('/client/location');
         } else {
-            setActiveTab('/user/profile');
+            setActiveTab('/client/profile');
         }
     }, [pathname]);
 
     const editBiodata = async () => {
-        router.push(`/user/profile/update`);
+        router.push(`/client/profile/update`);
     };
 
     const updateAvatar = async () => {
-        router.push(`/user/profile/avatar`);
+        router.push(`/client/profile/avatar`);
     };
 
     const location = async () => {
-        router.push(`/user/profile/location`);
+        router.push(`/client/profile/location`);
     }   
 
 
@@ -126,8 +126,8 @@ function Profile({ clientProfile }) {
                         <Tab
                             label="Profile"
                             component={Link}
-                            href="/user/profile"
-                            value="/user/profile"
+                            href="/client/profile"
+                            value="/client/profile"
 
                             sx={{
                                 color: "#FFF",
@@ -141,8 +141,8 @@ function Profile({ clientProfile }) {
                         <Tab
                             label="Edit-Biodata"
                             onClick={editBiodata}
-                            href="/user/profile/update"
-                            value="/user/profile/update"
+                            href="/client/profile/update"
+                            value="/client/profile/update"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -156,8 +156,8 @@ function Profile({ clientProfile }) {
                             label="Avatar"
                             component={Link}
                             onClick={updateAvatar}
-                            href="/user/profile/avatar"
-                            value="/user/profile/avatar"
+                            href="/client/profile/avatar"
+                            value="/client/profile/avatar"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
@@ -171,8 +171,8 @@ function Profile({ clientProfile }) {
                             label="Location"
                             component={Link}
                             onClick={location}
-                            href="/user/location"
-                            value="/user/location"
+                            href="/client/location"
+                            value="/client/location"
                             sx={{
                                 color: "#FFF",
                                 fontWeight: 'bold',
