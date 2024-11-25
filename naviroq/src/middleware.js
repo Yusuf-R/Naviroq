@@ -79,5 +79,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*', 'api/v1/:path*'], // Define routes to match
+    matcher: ['/user/:path*', '/driver/:path*', '/admin/:path*', '/api/v1/:path*'], // Define routes to match
 };
