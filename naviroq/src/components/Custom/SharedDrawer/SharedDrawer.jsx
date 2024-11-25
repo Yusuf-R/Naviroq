@@ -61,9 +61,9 @@ function SharedDrawer({ isOpen, onClose }) {
                 backgroundColor: '#34C0D9',
               },
             }}
-            onClick={() => handleNavigation('/auth/user')}  // Close drawer and redirect to user login/signup
+            onClick={() => handleNavigation('/auth/client')}  // Close drawer and redirect to client login/signup
           >
-            User
+            Client
           </Button>
 
           <Button
