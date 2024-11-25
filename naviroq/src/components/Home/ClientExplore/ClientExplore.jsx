@@ -86,6 +86,7 @@ function ClientExplore() {
         mutationRegister.mutate({ encryptedData }, {
             onSuccess: async (respData) => {
                 toast.success("Registration successful 🚀");
+                console.log({ respData });
                 const signInResponse = await signIn('credentials', {
                     redirect: false,
                     email: data.email,
@@ -128,6 +129,7 @@ function ClientExplore() {
         const encryptedData = await AdminUtils.encryptCredentials(data);
         mutationLogin.mutate({ encryptedData }, {
             onSuccess: async (respData) => {
+                console.log({ respData });
                 toast.success("Login successful 🚀");
 
                 // Log in the user immediately after successful registration
