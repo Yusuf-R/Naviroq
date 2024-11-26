@@ -36,18 +36,12 @@ export async function middleware(req) {
             req,
             secret: process.env.AUTH_SECRET,
             secureCookie: process.env.NODE_ENV === 'production',
-            cookieName:
-                process.env.NODE_ENV === 'production'
-                    ? '__Secure-next-auth.session-token'
-                    : 'next-auth.session-token',
+            cookieName: '__Secure-authjs.session-token',
         });
 
         // Redirect to login if no token is found
         if (!token) {
             console.log('Failed to retrieve token.');
-            console.log({ token });
-            console.log('Redirecting to login page.');
-
             return NextResponse.redirect(new URL('/', req.url));
         }
         const userRole = token.role;
