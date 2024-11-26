@@ -1,4 +1,4 @@
-# Naviroq# **Naviroq**  
+# Naviroq  
 🚗 **Revolutionizing Ride-Hailing with Seamless Driver-Client Integration**
 
 Naviroq is a feature-rich ride-hailing platform designed to connect drivers and clients in a transparent, efficient, and user-friendly manner. Built with cutting-edge technologies, Naviroq emphasizes real-time interaction, enhanced user experience, and scalability, aiming to redefine the ride-hailing landscape.
