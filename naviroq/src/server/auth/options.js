@@ -73,7 +73,6 @@ const options = {
             return session;
         },
     },
-    debug: true,
 };
 
 export default options;
